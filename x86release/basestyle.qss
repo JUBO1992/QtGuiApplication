@@ -1,0 +1,58 @@
+#tabWidget_Main::tab-bar {
+    left: 72px;
+}
+
+#pushButton_MenuFile{
+	min-width:70px;
+	max-width:70px;
+	min-height:30px;
+	max-height:30px;
+}
+
+#tabWidget_Main QTabBar::tab{
+	min-width:70px;
+	max-width:70px;
+	min-height:30px;
+	max-height:30px;
+}
+
+#pushButton_MenuFile{
+	color:white;
+	border: 1px solid #416ABD;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 
+		stop:0 #467FBD, stop:0.5 #2A5FAC,stop:0.51 #1A4088, stop:1 #419ACF);
+}
+#pushButton_MenuFile::hover{
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 
+		stop:0 #7BB2EB, stop:0.5 #477ECD,stop:0.51 #114ECF, stop:1 #80E1FF);
+}
+#pushButton_MenuFile::pressed{
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 
+		stop:0 #467BBB, stop:0.5 #2F63AE,stop:0.51 #1C438A, stop:1 #358BC9);
+}
+
+#tabWidget_Main QTabBar::tab {
+	background: transparent;
+	margin-left: 2px;
+	margin-right: 2px;
+}
+#tabWidget_Main QTabBar::tab:selected, QTabBar::tab:hover {
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+}
+#tabWidget_Main::tab-bar {
+ 	border: 1px solid #BAC9DB;
+}
+#tabWidget_Main QTabBar::tab:selected{
+	border: 1px solid #BAC9DB;
+	background: white;
+    border-bottom-color: #FFFFFF;
+}
+#tabWidget_Main QTabBar::tab:hover:!selected{
+	border: 1px solid #ECBC3D;
+}
+#tabWidget_Main QTabBar::tab:!selected {
+    margin-top: 1px; 
+}
