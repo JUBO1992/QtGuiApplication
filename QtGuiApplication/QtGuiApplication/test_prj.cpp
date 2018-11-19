@@ -6,6 +6,9 @@
 #include "commonoperate.h"
 #include "threadtest.h"
 #include <windows.h>
+#include "menuitemwidget.h"
+#include <QWidgetAction>
+#include <QMenu>
 
 CommonOperate * g_COperate = NULL;
 
@@ -19,6 +22,8 @@ test_prj::test_prj(QWidget *parent)
 	//setAttribute(Qt::WA_Hover, true);
 	//setFixedSize(366, 312);
 	//setWindowFlags(Qt::WindowCloseButtonHint);
+	ui.centralWidget->layout()->setMargin(0);
+	ui.centralWidget->layout()->setSpacing(0);
 
 	np = new NotepadWindow();
 	dw = new DrawWindow();
@@ -47,10 +52,56 @@ test_prj::test_prj(QWidget *parent)
 	this->setStyleSheet(qss);
 
 	ui.pushButton_MenuFile->setParent(ui.tabWidget_Main);
+
+	ui.dockWidgetContents->layout()->setMargin(0);
+	ui.dockWidgetContents->layout()->setSpacing(0);
+
+	initMenuBtn();
 }
 
 test_prj::~test_prj()
 {
+
+}
+
+void test_prj::initMenuBtn()
+{
+	QMenu* menu = new QMenu(this);
+	ui.pushButton_MenuFile->setMenu(menu);
+
+	QWidgetAction* actionNew = new QWidgetAction(this);
+	actionNew->setDefaultWidget(new MenuItemWidget(QPixmap("png/file_new.png"), QString::fromStdWString(L"新建"), this));
+	menu->addAction(actionNew);
+
+
+	QWidgetAction* actionOpen = new QWidgetAction(this);
+	actionOpen->setDefaultWidget(new MenuItemWidget(QPixmap("png/file_open.png"), QString::fromStdWString(L"打开"), this));
+	menu->addAction(actionOpen);
+
+	QWidgetAction* actionSave = new QWidgetAction(this);
+	actionSave->setDefaultWidget(new MenuItemWidget(QPixmap("png/file_save.png"), QString::fromStdWString(L"保存"), this));
+	menu->addAction(actionSave);
+
+	QWidgetAction* actionSaveAs = new QWidgetAction(this);
+	actionSaveAs->setDefaultWidget(new MenuItemWidget(QPixmap("png/file_saveas.png"), QString::fromStdWString(L"另存为"), this));
+	menu->addAction(actionSaveAs);
+
+	menu->addSeparator();
+
+	QWidgetAction* actioPrint = new QWidgetAction(this);
+	actioPrint->setDefaultWidget(new MenuItemWidget(QPixmap("png/file_print.png"), QString::fromStdWString(L"打印"), this));
+	menu->addAction(actioPrint);
+
+	menu->addSeparator();
+
+	QWidgetAction* actionAout = new QWidgetAction(this);
+	actionAout->setDefaultWidget(new MenuItemWidget(QPixmap("png/about.png"), QString::fromStdWString(L"关于"), this));
+	menu->addAction(actionAout);
+
+	QWidgetAction* actionExit = new QWidgetAction(this);
+	actionExit->setDefaultWidget(new MenuItemWidget(QPixmap("png/exit.png"), QString::fromStdWString(L"退出"), this));
+	menu->addAction(actionExit);
+	connect(actionExit, SIGNAL(triggered()), this, SLOT(close()));
 
 }
 

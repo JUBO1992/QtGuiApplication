@@ -215,7 +215,7 @@
          </item>
         </layout>
        </item>
-       <item row="2" column="2">
+       <item row="2" column="3">
         <widget class="QPushButton" name="pushButton_TestBtn">
          <property name="minimumSize">
           <size>

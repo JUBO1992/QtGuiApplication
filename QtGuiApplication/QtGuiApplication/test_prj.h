@@ -19,18 +19,6 @@ public:
 	~test_prj();
 	void mouseMoveEvent(QMouseEvent *);
 
-private:
-	Ui::test_prjClass ui;
-	NotepadWindow *np;
-	DrawWindow *dw;
-	QLabel *_status_label;
-	MyModel *_mymodel;
-	QTableView *_table_view;
-	QTableView *_table_view2; 
-	QStandardItemModel *_model;
-	SpinDelegate *_spin_delegate;
-
-
 public slots:
 	void on_pushbutton_clicked();
 	void on_drawwidget_clicked();
@@ -41,6 +29,20 @@ public slots:
 	void on_pushButton_LanTool_clicked();
 	void on_pushButton_MsgWin_clicked();
 	void on_pushButton_TestBtn_clicked();
+
+private:
+	void initMenuBtn();
+
+private:
+	Ui::test_prjClass ui;
+	NotepadWindow *np;
+	DrawWindow *dw;
+	QLabel *_status_label;
+	MyModel *_mymodel;
+	QTableView *_table_view;
+	QTableView *_table_view2;
+	QStandardItemModel *_model;
+	SpinDelegate *_spin_delegate;
 };
 
 #endif // TEST_PRJ_H

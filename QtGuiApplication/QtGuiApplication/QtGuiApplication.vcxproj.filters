@@ -85,6 +85,15 @@
     <ClCompile Include="GeneratedFiles\Release\moc_test_prj.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="menuitemwidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_menuitemwidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_menuitemwidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="QtGuiApplication.h">
@@ -139,6 +148,9 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="test_prj.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="menuitemwidget.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
