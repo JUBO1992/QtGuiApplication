@@ -25,6 +25,7 @@ test_prj::test_prj(QWidget *parent)
 	ui.centralWidget->layout()->setMargin(0);
 	ui.centralWidget->layout()->setSpacing(0);
 
+
 	np = new NotepadWindow();
 	dw = new DrawWindow();
 	_mymodel = new MyModel(0);
@@ -53,10 +54,15 @@ test_prj::test_prj(QWidget *parent)
 
 	ui.pushButton_MenuFile->setParent(ui.tabWidget_Main);
 
+	ui.widget_Top->layout()->setMargin(0);
+	ui.widget_Top->layout()->setSpacing(0);
+
 	ui.dockWidgetContents->layout()->setMargin(0);
 	ui.dockWidgetContents->layout()->setSpacing(0);
 
 	initMenuBtn();
+
+	connect(ui.tabWidget_Main, SIGNAL(tabBarDoubleClicked(int)), this, SLOT(hideOrShowTabWidget()));
 }
 
 test_prj::~test_prj()
@@ -198,4 +204,11 @@ void test_prj::on_pushButton_MsgWin_clicked()
 void test_prj::on_pushButton_TestBtn_clicked()
 {
 	runThread();
+}
+
+void test_prj::hideOrShowTabWidget()
+{
+	static bool isTabWidgetHide = false;
+	ui.widget_Top->setFixedHeight(isTabWidgetHide ? 150 : 32);
+	isTabWidgetHide = !isTabWidgetHide;
 }
