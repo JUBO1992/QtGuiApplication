@@ -1,8 +1,10 @@
 /Properties/launchSettings.json
 
-# Project Ignore
+# 本工程过滤选项
 GeneratedFiles
+x64debug
 x64release
+x86debug
 x86release/*.exe
 
 ## Ignore Visual Studio temporary files, build results, and

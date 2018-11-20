@@ -207,6 +207,5 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="main.ico" />
-    <Image Include="bitmap1.bmp" />
   </ItemGroup>
 </Project>
