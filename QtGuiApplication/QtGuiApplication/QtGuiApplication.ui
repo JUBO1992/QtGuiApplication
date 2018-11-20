@@ -23,7 +23,7 @@
  <layoutDefault spacing="6" margin="11" />
  <pixmapfunction></pixmapfunction>
  <resources>
-   <include location="QtGuiApplication.qrc"/>
+   <include location="qtguiapplication.qrc"/>
  </resources>
  <connections/>
 </UI>

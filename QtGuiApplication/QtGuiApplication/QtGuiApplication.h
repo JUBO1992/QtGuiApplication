@@ -1,7 +1,8 @@
-#pragma once
+#ifndef QTGUIAPPLICATION_H
+#define QTGUIAPPLICATION_H
 
 #include <QtWidgets/QMainWindow>
-#include "ui_QtGuiApplication.h"
+#include "ui_qtguiapplication.h"
 
 class QtGuiApplication : public QMainWindow
 {
@@ -9,7 +10,10 @@ class QtGuiApplication : public QMainWindow
 
 public:
 	QtGuiApplication(QWidget *parent = 0);
+	~QtGuiApplication();
 
 private:
 	Ui::QtGuiApplicationClass ui;
 };
+
+#endif // QTGUIAPPLICATION_H
