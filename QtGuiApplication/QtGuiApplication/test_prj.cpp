@@ -9,6 +9,9 @@
 #include "menuitemwidget.h"
 #include <QWidgetAction>
 #include <QMenu>
+#include "projectopenwnd.h"
+#include "projectregisterwnd.h"
+
 
 CommonOperate * g_COperate = NULL;
 
@@ -188,7 +191,7 @@ void test_prj::on_viewdelegate_clicked()
 
 void test_prj::on_pushButton_FileExtract_clicked()
 {
-	WinExec("FileExtract.exe", SW_SHOW);
+	WinExec("ToolCollection.exe", SW_SHOW);
 }
 
 void test_prj::on_pushButton_LanTool_clicked()
@@ -211,4 +214,18 @@ void test_prj::hideOrShowTabWidget()
 	static bool isTabWidgetHide = false;
 	ui.widget_Top->setFixedHeight(isTabWidgetHide ? 150 : 32);
 	isTabWidgetHide = !isTabWidgetHide;
+}
+
+void test_prj::on_pushButton_marineOpen_clicked()
+{
+	ProjectOpenWnd openWnd(this);
+	openWnd.exec();
+
+}
+
+void test_prj::on_pushButton_marineRegister_clicked()
+{
+	ProjectRegisterWnd registerWnd(this);
+	registerWnd.exec();
+
 }

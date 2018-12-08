@@ -19,7 +19,7 @@ GlobalConfig::~GlobalConfig()
 //定义用#分割key#value
 void GlobalConfig::SetProperty(QString key, QString value)
 {
-	QFile file(qApp->applicationDirPath() + "\\FileExtract.cfg");
+	QFile file(qApp->applicationDirPath() + "\\" + qApp->applicationName() + ".cfg");
 	if (!file.exists())
 	{
 		if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -63,7 +63,7 @@ void GlobalConfig::SetProperty(QString key, QString value)
 QString GlobalConfig::GetProperty(QString key)
 {
 	QString value = QString();
-	QFile file(qApp->applicationDirPath() + "\\FileExtract.cfg");
+	QFile file(qApp->applicationDirPath() + "\\" + qApp->applicationName() + ".cfg");
 	if (file.open(QIODevice::ReadOnly | QIODevice::Text))
 	{
 		QMap<QString, QString> keyvalue;

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>639</width>
-    <height>639</height>
+    <width>630</width>
+    <height>638</height>
    </rect>
   </property>
   <property name="font">
@@ -17,7 +17,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>FileExtract</string>
+   <string>生产处理工具集</string>
   </property>
   <property name="windowIcon">
    <iconset>
@@ -40,7 +40,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="tab">
        <property name="autoFillBackground">
@@ -527,9 +527,38 @@
        </attribute>
        <layout class="QHBoxLayout" name="horizontalLayout_21"/>
       </widget>
+      <widget class="ArchiveCheckWnd" name="tab_3">
+       <attribute name="title">
+        <string>影像归档检查</string>
+       </attribute>
+      </widget>
      </widget>
     </item>
    </layout>
+  </widget>
+  <widget class="QDockWidget" name="dockWidget">
+   <property name="minimumSize">
+    <size>
+     <width>300</width>
+     <height>200</height>
+    </size>
+   </property>
+   <property name="allowedAreas">
+    <set>Qt::LeftDockWidgetArea|Qt::RightDockWidgetArea</set>
+   </property>
+   <property name="windowTitle">
+    <string>信息窗口</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents">
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
+      <widget class="QTextBrowser" name="textBrowser"/>
+     </item>
+    </layout>
+   </widget>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
@@ -538,6 +567,12 @@
    <class>FileExtract2</class>
    <extends>QWidget</extends>
    <header location="global">fileextract2.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ArchiveCheckWnd</class>
+   <extends>QWidget</extends>
+   <header location="global">archivecheckwnd.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
@@ -552,8 +587,8 @@
    <slot>OpenListClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>583</x>
-     <y>204</y>
+     <x>367</x>
+     <y>197</y>
     </hint>
     <hint type="destinationlabel">
      <x>572</x>
@@ -568,8 +603,8 @@
    <slot>InputClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>583</x>
-     <y>312</y>
+     <x>367</x>
+     <y>303</y>
     </hint>
     <hint type="destinationlabel">
      <x>575</x>
@@ -584,8 +619,8 @@
    <slot>OutputClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>583</x>
-     <y>420</y>
+     <x>367</x>
+     <y>409</y>
     </hint>
     <hint type="destinationlabel">
      <x>570</x>
@@ -600,12 +635,28 @@
    <slot>OKClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>585</x>
-     <y>488</y>
+     <x>369</x>
+     <y>475</y>
     </hint>
     <hint type="destinationlabel">
      <x>570</x>
      <y>323</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tabWidget</sender>
+   <signal>currentChanged(int)</signal>
+   <receiver>FileExtractClass</receiver>
+   <slot>TabChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>196</x>
+     <y>319</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>335</x>
+     <y>319</y>
     </hint>
    </hints>
   </connection>
@@ -615,5 +666,6 @@
   <slot>InputClicked()</slot>
   <slot>OutputClicked()</slot>
   <slot>OKClicked()</slot>
+  <slot>TabChanged(int)</slot>
  </slots>
 </ui>

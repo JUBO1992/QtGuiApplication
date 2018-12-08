@@ -14,6 +14,9 @@ public:
 	FileExtract(QWidget *parent = 0);
 	~FileExtract();
 
+	bool isMsgWndVisible(){ return ui.dockWidget->isVisible(); }
+	void setMsgWndVisible(bool visible){ ui.dockWidget->setVisible(visible); }
+
 private:
 	void SetWindowBackground();
 
@@ -22,6 +25,7 @@ private slots:
 	void InputClicked();
 	void OutputClicked();
 	void OKClicked();
+	void TabChanged(int idx);
 
 private:
 	Ui::FileExtractClass ui;

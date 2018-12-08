@@ -7,6 +7,9 @@
 #include "fileoperate.h"
 #include "globalconfig.h"
 #include "codedetect.h"
+#include "commonoperate.h"
+
+CommonOperate * g_COperate = NULL;
 
 FileExtract::FileExtract(QWidget *parent)
 	: QMainWindow(parent)
@@ -39,10 +42,23 @@ FileExtract::FileExtract(QWidget *parent)
 	m_model = new ListViewModel();
 	ui.listView->setModel(m_model);
 	m_list.clear();
+
+	ui.dockWidget->layout()->setMargin(0);
+	ui.dockWidget->layout()->setSpacing(0);
+
+	g_COperate = new CommonOperate(NULL, this, ui.textBrowser);
+
+	QString tabindex = GlobalConfig::GetProperty("TABWIDGETINDEX");
+	if (!tabindex.isEmpty())
+	{
+		ui.tabWidget->setCurrentIndex(tabindex.toInt());
+	}
 }
 
 FileExtract::~FileExtract()
 {
+	QString tabindex = QString("%1").arg(ui.tabWidget->currentIndex());
+	GlobalConfig::SetProperty("TABWIDGETINDEX", tabindex);
 	m_list.clear();
 }
 
@@ -299,4 +315,16 @@ void FileExtract::OKClicked()
 	//		}
 	//	}
 	//}
+}
+
+void FileExtract::TabChanged(int idx)
+{
+	if (idx == 2)
+	{
+		ui.dockWidget->setVisible(true);
+	}
+	else
+	{
+		ui.dockWidget->setVisible(false);
+	}
 }

@@ -30,6 +30,8 @@ public slots:
 	void on_pushButton_MsgWin_clicked();
 	void on_pushButton_TestBtn_clicked();
 	void hideOrShowTabWidget();
+	void on_pushButton_marineOpen_clicked();
+	void on_pushButton_marineRegister_clicked();
 
 private:
 	void initMenuBtn();
