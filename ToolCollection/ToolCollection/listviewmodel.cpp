@@ -28,7 +28,7 @@ QVariant ListViewModel::data(const QModelIndex &index, int role) const
 	{
 		return int(Qt::AlignLeft | Qt::AlignVCenter);
 	}
-	else if (role == Qt::DisplayRole || role == Qt::EditRole)
+	else if (role == Qt::DisplayRole || role == Qt::EditRole || role == Qt::ToolTipRole)
 	{
 		if (index.row() < 0 && index.row() >= stringList().size())
 		{

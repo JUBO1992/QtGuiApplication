@@ -81,7 +81,29 @@ private:
 	QTextBrowser * m_textBrowser;//显示文本控件
 };
 
-//文件或文件夹的父文件夹名称
+/*
+	@brief 获取文件或文件夹的父文件夹名称
+	@param[in] dirOrFile
+	@return 
+*/
 QString ParentDirName(const QString& dirOrFile);
+
+/*
+	@brief 判断两个文件名是否一致
+*/
+bool IsSameFileName(const QString& fileName1, const QString fileName2,
+	Qt::CaseSensitivity isFileNameCs = Qt::CaseInsensitive, Qt::CaseSensitivity isSuffixCs = Qt::CaseInsensitive);
+
+/*
+	@brief 判断列表是否包含字符串
+*/
+bool QStrListContainsQStr(const QStringList& strList, const QString str,
+	Qt::CaseSensitivity isFileNameCs = Qt::CaseInsensitive, Qt::CaseSensitivity isSuffixCs = Qt::CaseInsensitive);
+
+/*
+	@brief 返回字符串在列表中的索引
+*/
+int QStrListIndexOfQStr(const QStringList& strList, const QString str,
+	Qt::CaseSensitivity isFileNameCs = Qt::CaseInsensitive, Qt::CaseSensitivity isSuffixCs = Qt::CaseInsensitive);
 
 #endif // COMMONOPERATE_H

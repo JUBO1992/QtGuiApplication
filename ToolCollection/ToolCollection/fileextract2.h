@@ -28,10 +28,15 @@ public:
 	void on_checkBox_searchFile_clicked();
 	void on_checkBox_searchDir_clicked();
 
+	void clicked_rightMenu(const QPoint &pos);
+	void clicked_deleteItem();
+
+
 private:
 	void searchFileOrDir();
 	void extractFileOrDir();
-	/*! \breif 将处理结果写入txt文件
+	/* 
+		@breif 将处理结果写入txt文件
 	*/
 	void writeProcessResult();
 
@@ -42,6 +47,10 @@ private:
 	QMap<QString, QStringList> m_searchresult;
 
 	bool m_searchdir;
+
+	QMenu *m_rightMenu;
+	QAction *m_deleteItem;
+
 };
 
 #endif // FILEEXTRACT2_H

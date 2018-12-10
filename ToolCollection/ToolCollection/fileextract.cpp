@@ -192,7 +192,7 @@ void FileExtract::OKClicked()
 	if (m_list.size() <= 0)
 	{
 		QMessageBox::warning(this, QString::fromLocal8Bit("Warning!"),
-			QString::fromLocal8Bit("列表不能为空！"), QMessageBox::Ok, QMessageBox::Ok);
+			QString("列表不能为空！"), QMessageBox::Ok, QMessageBox::Ok);
 		return;
 	}
 
@@ -201,7 +201,7 @@ void FileExtract::OKClicked()
 	if (input.isEmpty() || !dir1.exists())
 	{
 		QMessageBox::warning(this, QString::fromLocal8Bit("Warning!"),
-			QString::fromLocal8Bit("输入目录不存在！"), QMessageBox::Ok, QMessageBox::Ok);
+			QString("输入目录不存在！"), QMessageBox::Ok, QMessageBox::Ok);
 		return;
 	}
 
@@ -210,7 +210,7 @@ void FileExtract::OKClicked()
 	if (output.isEmpty() || !dir2.exists())
 	{
 		QMessageBox::warning(this, QString::fromLocal8Bit("Warning!"),
-			QString::fromLocal8Bit("输出目录不存在！"), QMessageBox::Ok, QMessageBox::Ok);
+			QString("输出目录不存在！"), QMessageBox::Ok, QMessageBox::Ok);
 		return;
 		//dir2.mkpath(ui.lineEdit_Output->text());
 	}
@@ -218,7 +218,7 @@ void FileExtract::OKClicked()
 	if (output.contains(input))
 	{
 		QMessageBox::warning(this, QString::fromLocal8Bit("Warning!"),
-			QString::fromLocal8Bit("输出目录不能是输入目录的子目录!"), QMessageBox::Ok, QMessageBox::Ok);
+			QString("输出目录不能是输入目录的子目录!"), QMessageBox::Ok, QMessageBox::Ok);
 		return;
 	}
 
@@ -271,7 +271,7 @@ void FileExtract::OKClicked()
 		if (process.wasCanceled())
 		{
 			QMessageBox::warning(this, QString::fromLocal8Bit("Warning!"),
-				QString::fromLocal8Bit("您已中断操作！"), QMessageBox::Ok, QMessageBox::Ok);
+				QString("您已中断操作！"), QMessageBox::Ok, QMessageBox::Ok);
 			ui.pushButton_OK->setEnabled(true);
 			return;
 		}
@@ -282,7 +282,7 @@ void FileExtract::OKClicked()
 	ui.pushButton_OK->setEnabled(true);
 
 	QMessageBox::warning(this, QString::fromLocal8Bit("Warning!"),
-		QString::fromLocal8Bit("提取完成！"), QMessageBox::Ok, QMessageBox::Ok);
+		QString("提取完成！"), QMessageBox::Ok, QMessageBox::Ok);
 
 	//QList<QFileInfo> file(dir1.entryInfoList());
 	//QProgressDialog process(this);

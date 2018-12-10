@@ -1,5 +1,6 @@
 #include "commonoperate.h"
 #include <QtWidgets/QApplication>
+#include <QFileInfo>
 #include "fileextract.h"
 
 CommonOperate::CommonOperate(QObject *parent, QMainWindow *mainWin, QTextBrowser *txtbrower)
@@ -119,4 +120,56 @@ QString ParentDirName(const QString& dirOrFile)
 	parentFolder = parentFolder.left(parentFolder.lastIndexOf("/"));
 	parentFolder = parentFolder.mid(parentFolder.lastIndexOf("/") + 1);
 	return parentFolder;
+}
+
+bool IsSameFileName(const QString& fileName1, const QString fileName2,
+	Qt::CaseSensitivity isFileNameCs /*= Qt::CaseInsensitive*/, Qt::CaseSensitivity isSuffixCs /*= Qt::CaseInsensitive*/)
+{
+	QString fname1 = QFileInfo(fileName1).completeBaseName();
+	QString fname2 = QFileInfo(fileName2).completeBaseName();
+	QString suffix1 = QFileInfo(fileName1).suffix();
+	QString suffix2 = QFileInfo(fileName2).suffix();
+	if (isFileNameCs == Qt::CaseInsensitive && isSuffixCs == Qt::CaseInsensitive)
+	{
+		return (fname1.toUpper() == fname2.toUpper()) & (suffix1.toUpper() == suffix2.toUpper());
+	}
+	else if (isFileNameCs != Qt::CaseInsensitive && isSuffixCs == Qt::CaseInsensitive)
+	{
+		return (fname1 == fname2) & (suffix1.toUpper() == suffix2.toUpper());
+	}
+	else if (isFileNameCs == Qt::CaseInsensitive && isSuffixCs != Qt::CaseInsensitive)
+	{
+		return (fname1.toUpper() == fname2.toUpper()) & (suffix1 == suffix2);
+	}
+	else
+	{
+		return (fname1 == fname2) & (suffix1 == suffix2);
+	}
+	return false;
+}
+
+bool QStrListContainsQStr(const QStringList& strList, const QString str,
+	Qt::CaseSensitivity isFileNameCs /*= Qt::CaseInsensitive*/, Qt::CaseSensitivity isSuffixCs /*= Qt::CaseInsensitive*/)
+{
+	for (int i = 0; i < strList.size(); ++i)
+	{
+		if (IsSameFileName(strList.at(i),str,isFileNameCs,isSuffixCs))
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+int QStrListIndexOfQStr(const QStringList& strList, const QString str,
+	Qt::CaseSensitivity isFileNameCs /*= Qt::CaseInsensitive*/, Qt::CaseSensitivity isSuffixCs /*= Qt::CaseInsensitive*/)
+{
+	for (int i = 0; i < strList.size(); ++i)
+	{
+		if (IsSameFileName(strList.at(i), str, isFileNameCs, isSuffixCs))
+		{
+			return i;
+		}
+	}
+	return -1;
 }

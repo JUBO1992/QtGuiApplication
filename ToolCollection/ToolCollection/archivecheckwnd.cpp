@@ -35,7 +35,7 @@ ArchiveCheckWnd::ArchiveCheckWnd(QWidget *parent)
 	m_pDataModel = new CheckItemModel;
 	ui.tableView->setModel(m_pDataModel);
 	ui.tableView->setSelectionBehavior(QAbstractItemView::SelectionBehavior::SelectRows);
-	ui.tableView->setSelectionMode(QAbstractItemView::SingleSelection);
+	//ui.tableView->setSelectionMode(QAbstractItemView::SingleSelection);
 	ui.tableView->horizontalHeader()->setStretchLastSection(true);
 	ui.tableView->setColumnWidth(0, 45);
 	m_pDataModel->setInfos(checkItems);
@@ -89,143 +89,30 @@ void ArchiveCheckWnd::on_pushButton_runCheck_clicked()
 		return;
 	}
 
-	QList<ErrorMsgStruct> errList;
-	CheckLevel ckLevel = CheckLevel::ProjectLevel;
-	QString otherErrMsg;	//记录其他错误信息
-
-	QDateTime curTime = QDateTime::currentDateTime();
-	QString strStartTime = QString("检查开始：%1\r\n").arg(curTime.toString("yyyy.MM.dd hh:mm:ss"));
-	g_COperate->MsgPrint(strStartTime);
-
-	QDir projectDir(inputFolder);
-	projectDir.setFilter(QDir::AllEntries | QDir::NoDotAndDotDot); //设置过滤
-	QString dirName = projectDir.dirName();
-	QString filePrefix = dirName;
-	filePrefix.remove("-");
-	QFileInfoList fileList = projectDir.entryInfoList(); // 获取所有的文件信息
-	foreach(QFileInfo file, fileList)
-	{
-		QString fileName = file.fileName();
-		if (file.isFile() && dirName.size() > 10 && fileName.startsWith(filePrefix, Qt::CaseInsensitive))
-		{
-			ckLevel = CheckLevel::ImageLevel;
-			break;
-		}
-		else if (file.isDir() && dirName.size() >= 2 && dirName.size() <= 10 
-			&& fileName.size() > 10 &&fileName.contains(dirName,Qt::CaseInsensitive))
-		{
-			ckLevel = CheckLevel::SensorLevel;
-			break;
-		}
-	}
-	
-	if (ckLevel == CheckLevel::ImageLevel)
-	{
-		QString imgFolder = inputFolder;
-		ErrorMsgStruct errMsg = checkImageFolder(imgFolder, m_pDataModel->getInofs());
-		if (errMsg.HasError())
-		{
-			errList << errMsg;
-			g_COperate->MsgPrint(errMsg);
-		}
-	}
-	else if (ckLevel == CheckLevel::SensorLevel)
-	{
-		foreach(QFileInfo file, fileList)
-		{
-			if (!file.isDir())
-			{
-				//此处是否需要报错？？
-				continue;
-			}
-			QString imgFolder = file.absoluteFilePath();
-			ErrorMsgStruct errMsg = checkImageFolder(imgFolder, m_pDataModel->getInofs());
-			if (errMsg.HasError())
-			{
-				errList << errMsg;
-				g_COperate->MsgPrint(errMsg);
-			}
-		}
-	}
-	else if (ckLevel == CheckLevel::ProjectLevel)
-	{
-		foreach(QFileInfo sensorFInfo, fileList)
-		{
-			if (!sensorFInfo.isDir())
-			{
-				//此处是否需要报错？？
-				continue;
-			}
-			QString sensorFolder = sensorFInfo.absoluteFilePath();
-			QDir sensorDir(sensorFolder);
-			sensorDir.setFilter(QDir::AllEntries | QDir::NoDotAndDotDot); //设置过滤
-			QFileInfoList imgFolderList = sensorDir.entryInfoList(); // 获取所有的文件信息
-			foreach(QFileInfo imgFInfo, imgFolderList)
-			{
-				if (!imgFInfo.isDir())
-				{
-					//此处是否需要报错？？
-					continue;
-				}
-				QString imgFolder = imgFInfo.absoluteFilePath();
-				ErrorMsgStruct errMsg = checkImageFolder(imgFolder, m_pDataModel->getInofs());
-				if (errMsg.HasError())
-				{
-					errList << errMsg;
-					g_COperate->MsgPrint(errMsg);
-				}
-			}
-		}
-	}
-
-	curTime = QDateTime::currentDateTime();
-	QString strEndTime = QString("检查结束：%1\r\n").arg(curTime.toString("yyyy.MM.dd hh:mm:ss"));
-	g_COperate->MsgPrint(strEndTime);
-
-	if (errList.size() == 0)
-	{
-		QMessageBox::information(this, "提示", "检查未发现错误！", QMessageBox::Ok, QMessageBox::Ok);
-	}
-	else
-	{//将检查记录输出到文件
-		QString sFilePath = inputFolder + "/checkresult.txt";
-
-		QFile file(sFilePath);
-		//方式：Append为追加，WriteOnly，ReadOnly  
-		if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-			QMessageBox::critical(NULL, "Tip","无法创建文件！");
-			return;
-		}
-		QTextStream out(&file);
-		out << strStartTime;
-		for (int i = 0; i < errList.size(); ++i)
-		{
-			out << g_COperate->GetErrMsg(errList.at(i));
-		}
-		out << strEndTime;
-
-		out.flush();
-		file.close();
-		QString msg = QString("检查记录已输出到：%1/checkresult.txt文件中！").arg(inputFolder);
-		QMessageBox::information(this, "提示", msg, QMessageBox::Ok, QMessageBox::Ok);
-	}
+	runCheck(inputFolder);
 }
 
 void ArchiveCheckWnd::clicked_rightMenu(const QPoint &pos)
 {
 	QModelIndex index = ui.tableView->indexAt(pos);
-
 	if (index.isValid())
 	{
 		m_addItem->setEnabled(true);
-		m_delteItem->setEnabled(true);
 		m_modifyItem->setEnabled(true);
 	}
 	else
 	{
 		m_addItem->setEnabled(true);
-		m_delteItem->setEnabled(false);
 		m_modifyItem->setEnabled(false);
+	}
+	QModelIndexList list = ui.tableView->selectionModel()->selectedRows();
+	if (list.size() > 0)
+	{
+		m_delteItem->setEnabled(true);
+	}
+	else
+	{
+		m_delteItem->setEnabled(false);
 	}
 	m_rightMenu->exec(QCursor::pos()); // 菜单出现的位置为当前鼠标的位置
 }
@@ -233,7 +120,7 @@ void ArchiveCheckWnd::clicked_rightMenu(const QPoint &pos)
 void ArchiveCheckWnd::clicked_addItem()
 {
 	QModelIndex index = ui.tableView->currentIndex();
-	CheckItemWnd itemWnd(this, CheckItemStruct());
+	CheckItemWnd itemWnd(this);
 	if (itemWnd.exec())
 	{
 		CheckItemStruct item = itemWnd.getCheckItem();
@@ -243,9 +130,16 @@ void ArchiveCheckWnd::clicked_addItem()
 
 void ArchiveCheckWnd::clicked_deleteItem()
 {
-	QModelIndex index = ui.tableView->currentIndex();
-	int row = index.row();
-	m_pDataModel->deleteItem(row);
+	//if (QMessageBox::Yes != QMessageBox::information(this, "提示", "是否确认删除该记录？", QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes))
+	//{
+	//	return;
+	//}
+	//QModelIndex index = ui.tableView->currentIndex();
+	//int row = index.row();
+	//m_pDataModel->deleteItem(row);
+
+	QModelIndexList list = ui.tableView->selectionModel()->selectedRows();
+	m_pDataModel->deleteItems(list);
 }
 
 void ArchiveCheckWnd::clicked_modifyItem()
@@ -286,10 +180,166 @@ void ArchiveCheckWnd::on_tableView_clicked(QModelIndex idx)
 	}
 }
 
-ErrorMsgStruct ArchiveCheckWnd::checkImageFolder(const QString& imageDirPath, const QList<CheckItemStruct>& checkItems, Qt::CaseSensitivity cs)
+void ArchiveCheckWnd::on_tableView_doubleClicked(QModelIndex idx)
+{
+	int row = idx.row();
+	CheckItemStruct item = m_pDataModel->getInofs().at(row);
+	CheckItemWnd itemWnd(this, item);
+	if (itemWnd.exec())
+	{
+		CheckItemStruct item = itemWnd.getCheckItem();
+		m_pDataModel->modifyItem(row, item);
+	}
+}
+
+void ArchiveCheckWnd::runCheck(QString inputFolder)
+{
+	QList<ErrorMsgStruct> errList;
+	CheckLevel ckLevel = CheckLevel::ProjectLevel;
+	QStringList otherErrMsg;	//记录其他错误信息
+
+	QDateTime curTime = QDateTime::currentDateTime();
+	QString strStartTime = QString("检查开始：%1\r\n").arg(curTime.toString("yyyy.MM.dd hh:mm:ss"));
+	g_COperate->MsgPrint(strStartTime);
+
+	QDir projectDir(inputFolder);
+	QString dirName = projectDir.dirName();
+	QString filePrefix = dirName;
+	filePrefix.remove("-");	//文件前缀为文件夹名去掉-
+	projectDir.setFilter(QDir::AllEntries | QDir::NoDotAndDotDot); //设置过滤
+	projectDir.setSorting(QDir::DirsFirst);
+	QFileInfoList fileList = projectDir.entryInfoList(); // 获取所有的文件信息
+	foreach(QFileInfo file, fileList)
+	{
+		QString fileName = file.fileName();
+		if (file.isFile() && dirName.size() > 10 && fileName.startsWith(filePrefix, Qt::CaseInsensitive))
+		{
+			ckLevel = CheckLevel::ImageLevel;
+			break;
+		}
+		else if (file.isDir() && dirName.size() >= 2 && dirName.size() <= 10
+			&& fileName.size() > 10 && fileName.contains(dirName, Qt::CaseInsensitive))
+		{
+			ckLevel = CheckLevel::SensorLevel;
+			break;
+		}
+	}
+
+	if (ckLevel == CheckLevel::ImageLevel)
+	{
+		QString imgFolder = inputFolder;
+		ErrorMsgStruct errMsg = checkImageFolder(imgFolder, m_pDataModel->getInofs());
+		if (errMsg.HasError())
+		{
+			errList << errMsg;
+			g_COperate->MsgPrint(errMsg);
+		}
+	}
+	else if (ckLevel == CheckLevel::SensorLevel)
+	{
+		foreach(QFileInfo file, fileList)
+		{
+			if (!file.isDir())
+			{
+				//此处是否需要报错？？
+				otherErrMsg << QString("%1目录下存在多余文件：%2").arg(projectDir.dirName()).arg(file.fileName());
+				continue;
+			}
+			QString imgFolder = file.absoluteFilePath();
+			ErrorMsgStruct errMsg = checkImageFolder(imgFolder, m_pDataModel->getInofs());
+			if (errMsg.HasError())
+			{
+				errList << errMsg;
+				g_COperate->MsgPrint(errMsg);
+			}
+		}
+	}
+	else if (ckLevel == CheckLevel::ProjectLevel)
+	{
+		foreach(QFileInfo sensorFInfo, fileList)
+		{
+			if (!sensorFInfo.isDir())
+			{
+				//此处是否需要报错？？
+				otherErrMsg << QString("%1目录下存在多余文件：%2").arg(projectDir.dirName()).arg(sensorFInfo.fileName());
+				continue;
+			}
+			QString sensorFolder = sensorFInfo.absoluteFilePath();
+			QDir sensorDir(sensorFolder);
+			sensorDir.setFilter(QDir::AllEntries | QDir::NoDotAndDotDot); //设置过滤
+			sensorDir.setSorting(QDir::DirsFirst);
+			QFileInfoList imgFolderList = sensorDir.entryInfoList(); // 获取所有的文件信息
+			foreach(QFileInfo imgFInfo, imgFolderList)
+			{
+				if (!imgFInfo.isDir())
+				{
+					//此处是否需要报错？？
+					otherErrMsg << QString("%1目录下存在多余文件：%2").arg(sensorDir.dirName()).arg(imgFInfo.fileName());
+					continue;
+				}
+				QString imgFolder = imgFInfo.absoluteFilePath();
+				ErrorMsgStruct errMsg = checkImageFolder(imgFolder, m_pDataModel->getInofs());
+				if (errMsg.HasError())
+				{
+					errList << errMsg;
+					g_COperate->MsgPrint(errMsg);
+				}
+			}
+		}
+	}
+	if (otherErrMsg.size() > 0)
+	{
+		g_COperate->MsgPrint("其他错误信息如下：");
+		g_COperate->MsgPrint(otherErrMsg.join("\r\n"));
+	}
+
+	curTime = QDateTime::currentDateTime();
+	QString strEndTime = QString("检查结束：%1\r\n").arg(curTime.toString("yyyy.MM.dd hh:mm:ss"));
+	g_COperate->MsgPrint(strEndTime);
+
+	if (errList.size() == 0 && otherErrMsg.size() == 0)
+	{
+		QMessageBox::information(this, "提示", "检查未发现错误！", QMessageBox::Ok, QMessageBox::Ok);
+	}
+	else
+	{//将检查记录输出到文件
+		QString sFilePath = inputFolder + "/checkresult.txt";
+
+		QFile file(sFilePath);
+		//方式：Append为追加，WriteOnly，ReadOnly  
+		if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+			QMessageBox::critical(NULL, "Tip", "无法创建文件！");
+			return;
+		}
+		QTextStream out(&file);
+		out << strStartTime.replace("\r\n", "\n");
+		out << endl;
+		for (int i = 0; i < errList.size(); ++i)
+		{
+			out << g_COperate->GetErrMsg(errList.at(i)).replace("\r\n", "\n");
+			out << endl;
+		}
+		if (otherErrMsg.size() > 0)
+		{
+			out << "其他错误信息如下：";
+			out << otherErrMsg.join("\n");
+			out << endl;
+		}
+		out << strEndTime.trimmed().replace("\r\n", "\n");
+		out << endl;
+
+		out.flush();
+		file.close();
+		QString msg = QString("检查记录已输出到：%1/checkresult.txt文件中！").arg(inputFolder);
+		QMessageBox::information(this, "提示", msg, QMessageBox::Ok, QMessageBox::Ok);
+	}
+}
+
+ErrorMsgStruct ArchiveCheckWnd::checkImageFolder(const QString& imageDirPath, const QList<CheckItemStruct>& checkItems,
+	Qt::CaseSensitivity isFileNameCs/* = Qt::CaseInsensitive*/, Qt::CaseSensitivity isSuffixCs/* = Qt::CaseInsensitive*/)
 {
 	QFileInfo info(imageDirPath);
-	if (!info.isDir() || !info.exists() || checkItems.size() <= 0)
+	if (!info.isDir() || !info.exists()/* || checkItems.size() <= 0*/)
 	{
 		return ErrorMsgStruct();
 	}
@@ -309,25 +359,11 @@ ErrorMsgStruct ArchiveCheckWnd::checkImageFolder(const QString& imageDirPath, co
 		}
 		if (checkItem._state == Required)
 		{
-			if (cs == Qt::CaseInsensitive)
-			{
-				requirdItems << checkItem._condition.replace("*", imagePrefix).toUpper();
-			}
-			else
-			{
-				requirdItems << checkItem._condition.replace("*", imagePrefix);
-			}
+			requirdItems << checkItem._condition.replace("*", imagePrefix);
 		}
 		else if (checkItem._state == Optional)
 		{
-			if (cs == Qt::CaseInsensitive)
-			{
-				optinalItems << checkItem._condition.replace("*", imagePrefix).toUpper();
-			}
-			else
-			{
-				optinalItems << checkItem._condition.replace("*", imagePrefix);
-			}
+			optinalItems << checkItem._condition.replace("*", imagePrefix);
 		}
 	}
 
@@ -341,42 +377,35 @@ ErrorMsgStruct ArchiveCheckWnd::checkImageFolder(const QString& imageDirPath, co
 		if (file.isFile())
 		{ 
 			QString fileName;
-			if (cs == Qt::CaseInsensitive)
-			{
-				fileName = file.fileName().toUpper();
-			}
-			else
-			{
-				fileName = file.fileName();
-			}
-			if (!fileName.startsWith(imagePrefix))
+			fileName = file.fileName();
+			if (!fileName.startsWith(imagePrefix, isFileNameCs))
 			{
 				errMsg._extraFiles << fileName;
 				continue;
 			}
-			if (!requirdItems.contains(fileName) &&
-				!optinalItems.contains(fileName))
+			//if (!requirdItems.contains(fileName) &&
+			//	!optinalItems.contains(fileName))
+			if (!QStrListContainsQStr(requirdItems,fileName,isFileNameCs,isSuffixCs) &&
+				!QStrListContainsQStr(optinalItems, fileName, isFileNameCs, isSuffixCs))
 			{
 				//暂时都归为多余文件
 				//errMsg._illegalFiles << fileName;
 				errMsg._extraFiles << fileName;
 				continue;
 			}
-			if (requirdItems.contains(fileName))
+			//if (requirdItems.contains(fileName))
+			//{
+			//	requirdItems.removeOne(fileName);
+			//}
+			int index = QStrListIndexOfQStr(requirdItems, fileName, isFileNameCs, isSuffixCs);
+			if (index != -1)
 			{
-				requirdItems.removeOne(fileName);
+				requirdItems.removeAt(index);
 			}
 		}
 		else
 		{
-			if (cs == Qt::CaseInsensitive)
-			{
-				errMsg._extraFiles << file.fileName().toUpper();
-			}
-			else
-			{
-				errMsg._extraFiles << file.fileName();
-			}
+			errMsg._extraFiles << file.fileName();
 		}
 	}
 	errMsg._missingFiles << requirdItems;
@@ -414,6 +443,8 @@ void ArchiveCheckWnd::writeCheckItems(const QList<CheckItemStruct>& checkItems)
 	itemsConfig = items.join("||");
 	GlobalConfig::SetProperty("CHECKIMTESCONFIG", itemsConfig);
 }
+
+
 
 CheckItemModel::CheckItemModel()
 {
@@ -508,4 +539,32 @@ Qt::ItemFlags CheckItemModel::flags(const QModelIndex &index) const
 		return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 	}
 	return QAbstractTableModel::flags(index);
+}
+
+void CheckItemModel::deleteItems(QList<int> idxs)
+{
+	qSort(idxs.begin(), idxs.end());
+	for (int i = idxs.size() - 1; i >= 0; --i)
+	{
+		int idx = idxs.at(i);
+		if (idx >= 0 && idx < m_itemList.size())
+		{
+			m_itemList.removeAt(idx);
+		}
+	}
+	flushView();
+}
+
+void CheckItemModel::deleteItems(QModelIndexList idxs)
+{
+	qSort(idxs.begin(), idxs.end());
+	for (int i = idxs.size() - 1; i >= 0; --i)
+	{
+		int idx = idxs.at(i).row();
+		if (idx >= 0 && idx < m_itemList.size())
+		{
+			m_itemList.removeAt(idx);
+		}
+	}
+	flushView();
 }

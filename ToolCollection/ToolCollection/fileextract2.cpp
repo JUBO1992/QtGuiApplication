@@ -7,6 +7,7 @@
 #include <QStandardPaths>
 #include <QProcess>
 #include <thread>
+#include <QMenu>
 #include "fileextract2.h"
 #include "fileoperate.h"
 #include "globalconfig.h"
@@ -20,6 +21,14 @@ FileExtract2::FileExtract2(QWidget *parent)
 	ui.listView->setModel(m_model);
 	m_list.clear();
 	m_searchdir = ui.checkBox_searchDir->checkState();
+
+	ui.listView->setContextMenuPolicy(Qt::CustomContextMenu);
+	m_rightMenu = new QMenu;
+	m_deleteItem = new QAction(QString::fromLocal8Bit("删除"), this);
+	m_rightMenu->addAction(m_deleteItem);
+	connect(ui.listView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(clicked_rightMenu(QPoint)));
+	connect(m_deleteItem, SIGNAL(triggered()), this, SLOT(clicked_deleteItem()));
+
 }
 
 FileExtract2::~FileExtract2()
@@ -167,6 +176,25 @@ void FileExtract2::on_checkBox_searchFile_clicked()
 void FileExtract2::on_checkBox_searchDir_clicked()
 {
 	searchFileOrDir();
+}
+
+void FileExtract2::clicked_rightMenu(const QPoint &pos)
+{
+	QModelIndexList modelIndexList = ui.listView->selectionModel()->selectedIndexes();
+	if (modelIndexList.size() > 0)
+	{
+		m_deleteItem->setEnabled(true);
+	}
+	else
+	{
+		m_deleteItem->setEnabled(false);
+	}
+	m_rightMenu->exec(QCursor::pos()); // 菜单出现的位置为当前鼠标的位置
+}
+
+void FileExtract2::clicked_deleteItem()
+{
+	deleteClicked();
 }
 
 void FileExtract2::searchFileOrDir()

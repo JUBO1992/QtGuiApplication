@@ -2,10 +2,19 @@
 #include <QMessageBox>
 
 CheckItemWnd::CheckItemWnd(QWidget *parent, CheckItemStruct item)
-: QDialog(parent)
-, m_item(item)
+	: QDialog(parent)
+	, m_item(item)
 {
 	ui.setupUi(this);
+
+	if (item._condition.isEmpty())
+	{
+		this->setWindowTitle("添加检查项");
+	}
+	else
+	{
+		this->setWindowTitle("编辑检查项");
+	}
 
 	ui.comboBox_isCheck->addItems(QStringList() << "是" << "否");
 	ui.comboBox_state->addItems(QStringList() << "必选" << "可选");

@@ -20,6 +20,7 @@ public:
 	void on_pushButton_scanFolder_clicked();
 	void on_pushButton_runCheck_clicked();
 	void on_tableView_clicked(QModelIndex idx);
+	void on_tableView_doubleClicked(QModelIndex idx);
 	void clicked_rightMenu(const QPoint &pos);
 	void clicked_addItem();
 	void clicked_deleteItem();
@@ -28,8 +29,11 @@ public:
 	void on_pushButton_clearInfoWnd_clicked();
 
 private:
+	//执行检查
+	void runCheck(QString inputFolder);
 	//以单景影像文件夹为单位进行检查
-	ErrorMsgStruct checkImageFolder(const QString& imageDirPath, const QList<CheckItemStruct>& checkItems, Qt::CaseSensitivity cs = Qt::CaseInsensitive);
+	ErrorMsgStruct checkImageFolder(const QString& imageDirPath, const QList<CheckItemStruct>& checkItems,
+		Qt::CaseSensitivity isFileNameCs = Qt::CaseInsensitive, Qt::CaseSensitivity isSuffixCs = Qt::CaseInsensitive);
 	//从配置文件读取检查项
 	void readCheckItems(QList<CheckItemStruct>& checkItems);
 	//将检查项写入配置文件
@@ -71,19 +75,13 @@ public:
 			flushView();
 		}
 	}
-	void deleteItems(QList<int> idxs)
+	void deleteItem(QModelIndex idx)
 	{
-		qSort(idxs.begin(), idxs.end());
-		for (int i = idxs.size() - 1; i >= 0; ++i)
-		{
-			int idx = idxs.at(i);
-			if (idx >= 0 && idx < m_itemList.size())
-			{
-				m_itemList.removeAt(idx);
-			}
-		}
-		flushView();
+		deleteItem(idx.row());
 	}
+	void deleteItems(QList<int> idxs);
+	void deleteItems(QModelIndexList idxs);
+
 	void modifyItem(int idx, CheckItemStruct item)
 	{
 		if (idx >=0 && idx < m_itemList.size())
