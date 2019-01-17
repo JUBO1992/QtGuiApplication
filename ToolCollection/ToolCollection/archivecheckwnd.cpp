@@ -7,6 +7,8 @@
 #include <QTextStream>
 #include "checkitemwnd.h"
 
+#pragma execution_character_set("utf-8")
+
 extern CommonOperate * g_COperate;
 
 ArchiveCheckWnd::ArchiveCheckWnd(QWidget *parent)
@@ -205,7 +207,16 @@ void ArchiveCheckWnd::runCheck(QString inputFolder)
 	QDir projectDir(inputFolder);
 	QString dirName = projectDir.dirName();
 	QString filePrefix = dirName;
-	filePrefix.remove("-");	//文件前缀为文件夹名去掉-
+	int sIdx = filePrefix.indexOf("-");
+	int eIdx = filePrefix.lastIndexOf("-");
+	if (eIdx > sIdx && eIdx < filePrefix.size()-1)
+	{//文件前缀为文件夹名去掉首尾-
+		filePrefix = filePrefix.left(sIdx) + filePrefix.mid(sIdx + 1, eIdx - sIdx - 1) + filePrefix.mid(eIdx + 1);
+	}
+	else
+	{//文件前缀为文件夹名去掉-
+		filePrefix.remove("-");
+	}
 	projectDir.setFilter(QDir::AllEntries | QDir::NoDotAndDotDot); //设置过滤
 	projectDir.setSorting(QDir::DirsFirst);
 	QFileInfoList fileList = projectDir.entryInfoList(); // 获取所有的文件信息
@@ -289,7 +300,7 @@ void ArchiveCheckWnd::runCheck(QString inputFolder)
 	}
 	if (otherErrMsg.size() > 0)
 	{
-		g_COperate->MsgPrint("其他错误信息如下：");
+		otherErrMsg.insert(0, QString("其他错误信息如下："));
 		g_COperate->MsgPrint(otherErrMsg.join("\r\n"));
 	}
 
@@ -321,7 +332,6 @@ void ArchiveCheckWnd::runCheck(QString inputFolder)
 		}
 		if (otherErrMsg.size() > 0)
 		{
-			out << "其他错误信息如下：";
 			out << otherErrMsg.join("\n");
 			out << endl;
 		}
@@ -346,8 +356,17 @@ ErrorMsgStruct ArchiveCheckWnd::checkImageFolder(const QString& imageDirPath, co
 	QDir imageDir(imageDirPath);
 	QString parentFolder = ParentDirName(imageDirPath);
 	QString imageFolder = imageDir.dirName();		//影像文件夹名称
-	QString imagePrefix = imageFolder;
-	imagePrefix = imagePrefix.remove("-");			//影像规范名称
+	QString imagePrefix = imageFolder;	
+	int sIdx = imagePrefix.indexOf("-");
+	int eIdx = imagePrefix.lastIndexOf("-");
+	if (eIdx > sIdx && eIdx < imagePrefix.size() - 1)
+	{//影像规范名称//文件前缀为文件夹名去掉首尾-
+		imagePrefix = imagePrefix.left(sIdx) + imagePrefix.mid(sIdx + 1, eIdx - sIdx - 1) + imagePrefix.mid(eIdx + 1);
+	}
+	else
+	{//影像规范名称//文件前缀为文件夹名去掉-
+		imagePrefix = imagePrefix.remove("-");
+	}
 
 	QStringList requirdItems, optinalItems;
 	for (int i = 0; i < checkItems.size(); ++i)

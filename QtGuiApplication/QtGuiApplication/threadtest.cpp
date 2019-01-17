@@ -49,12 +49,19 @@ void runThread2()
 	t3.join();
 }
 
-
 void Counter::operator()() const
 {
 	for (int i = 0; i < mNumIterations; ++i)
 	{
-		g_COperate->MsgPrint(QString("Counter %1 has value ").arg(mId));
-		g_COperate->MsgPrint(QString("%1").arg(i));
+		g_COperate->MsgPrint(QString("Counter %1 has value %2").arg(mId).arg(i));
+	}
+}
+
+
+void counter(int id, int numIter)
+{
+	for (int i = 0; i < numIter; ++i)
+	{
+		g_COperate->MsgPrint(QString("Counter %1 has value %2").arg(id).arg(i));
 	}
 }

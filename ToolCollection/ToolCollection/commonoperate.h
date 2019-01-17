@@ -5,7 +5,6 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QTextBrowser>
 
-#pragma execution_character_set("utf-8")
 
 enum CheckStateEnum
 {

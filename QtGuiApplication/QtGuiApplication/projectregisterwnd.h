@@ -23,14 +23,20 @@ private:
 	void initWnd();
 	void clearComboBox();
 	void updateWnd();
+	void opendb();
 	void destory();
-	bool initModel(bool isSQL = false);
+	bool initRasterModel(bool isSQL = false);
+	bool initSurveyModel(bool isSQL = false);
+	bool initArchiveModel(bool isSQL = false);
 
-	private slots:
+	void closeEvent(QCloseEvent *);
+
+private slots:
 	void on_pushButton_saveProject_clicked();
 	void on_pushButton_delete_clicked();
 	void on_pushButton_cancel_clicked();
 	void on_comboBox_projectID_currentIndexChanged(int);
+	void on_comboBox_projectID_editTextChanged(QString);
 
 	void on_pushButton_newDatabase_clicked();
 	void on_pushButton_importDatabase_clicked();
@@ -38,12 +44,26 @@ private:
 	void on_pushButton_importRaster_clicked();
 	void on_pushButton_updateRasterMD_clicked();
 	void on_pushButton_saveRasterMD_clicked();
+	void on_tableView_raster_clicked(QModelIndex idx);
+
+	void on_pushButton_importSurvey_clicked();
+	void on_pushButton_updateSurveyMD_clicked();
+	void on_pushButton_saveSurveyMD_clicked();
+	void on_tableView_survey_clicked(QModelIndex idx);
+
+	void on_pushButton_importArchive_clicked();
+	void on_pushButton_updateArchiveMD_clicked();
+	void on_pushButton_saveArchiveMD_clicked();
+	void on_tableView_archive_clicked(QModelIndex idx);
+
+	void clicked_rightMenu(const QPoint &pos);
+	void clicked_deleteAction();
 
 private:
 	Ui::ProjectRegisterWnd ui;
 	QMap<QString, MarinePrjStruct> m_projectMap;
 	//MarinePrjStruct m_curProject;
-	CMarineProject* m_pMarinePrj;		//当前海测工程
+	CMarineProject* m_pCurMarinePrj;		//当前海测工程
 
 	QSqlDatabase m_rasterMDdb;			//栅格元数据库
 	QSqlDatabase m_surveyMDdb;			//测量元数据库
@@ -54,6 +74,10 @@ private:
 	QPointer<MetadataSqlModel> m_pArchiveModel;
 
 	bool m_isUpdateWnd;
+
+	QMenu *m_pRightMenu;
+	QAction *m_pDeleteAction;
+
 };
 
 #endif // PROJECTREGISTERWND_H

@@ -1,8 +1,9 @@
 ﻿#include "projectopenwnd.h"
 //#include "idatainterface.h"
 #include <QSqlDatabase>
-#include <QScrollBar>
 #include <QMessageBox>
+#include <QScrollBar>
+#include "marineproject.h"
 
 //extern iDataInterface* g_pInterface;
 
@@ -11,6 +12,11 @@ ProjectOpenWnd::ProjectOpenWnd(QWidget *parent)
 	, m_dataModel(NULL)
 {
 	ui.setupUi(this);
+	QColor qclr(129, 168, 211);
+	QPalette palette;
+	palette.setBrush(this->backgroundRole(), qclr);
+	this->setPalette(palette);
+
 	//读取海测工程列表
 	ReadProjectMenu(m_prjList);
 	//初始化窗口
@@ -35,7 +41,7 @@ void ProjectOpenWnd::initWnd()
 	ui.tableView->setColumnWidth(0, 45);
 	m_dataModel->setInfos(m_prjList.values());
 
-	QStringList recntPrjs;// = g_pInterface->property("RecentMarinePrjs").toString().split("|", QString::SkipEmptyParts);
+	QStringList recntPrjs = MSGetProperty("RecentMarinePrjs").toString().split("|", QString::SkipEmptyParts);
 	QStringList headerLabels;
 	ui.tableWidget->setColumnCount(2);
 	ui.tableWidget->setRowCount(recntPrjs.size());
@@ -82,7 +88,7 @@ void ProjectOpenWnd::on_pushButton_open_clicked()
 		QMessageBox::information(this, "提示", "工程不存在，请重新选择！", QMessageBox::Ok, QMessageBox::Ok);
 		return;
 	}
-	QStringList recntPrjs;// = g_pInterface->property("RecentMarinePrjs").toString().split("|", QString::SkipEmptyParts);
+	QStringList recntPrjs = MSGetProperty("RecentMarinePrjs").toString().split("|", QString::SkipEmptyParts);
 	int index = recntPrjs.indexOf(m_selPrj._prjID);
 	if (index != -1)
 	{
@@ -93,12 +99,24 @@ void ProjectOpenWnd::on_pushButton_open_clicked()
 	{
 		recntPrjs = recntPrjs.mid(0, 4);
 	}
-	//g_pInterface->setProperty("RecentMarinePrjs", recntPrjs.join("|"));
+	MSSetProperty("RecentMarinePrjs", recntPrjs.join("|"));
 
-	QString msg = QString("工程编号：%1，工程名称：%2").arg(m_selPrj._prjID).arg(m_selPrj._prjName);
-	QMessageBox::information(this, "提示", msg, QMessageBox::Ok, QMessageBox::Ok);
-	OpenMarinePrj(m_selPrj);
-	//accept();
+	//QString msg = QString("工程编号：%1，工程名称：%2").arg(m_selPrj._prjID).arg(m_selPrj._prjName);
+	//QMessageBox::information(this, "提示", msg, QMessageBox::Ok, QMessageBox::Ok);
+	CMarineProject projct(m_selPrj);
+	QMap<QString, MSFileStruct> vectorFiles;
+	projct.getVectorList(vectorFiles);
+	if (vectorFiles.size() == 0)
+	{
+		QMessageBox::information(this, "提示", "该项目下不存在矢量数据！", QMessageBox::Ok, QMessageBox::Ok);
+		return;
+	}
+	accept();
+	bool isSuccess = OpenMarinePrj(m_selPrj);
+	if (!isSuccess)
+	{
+		QMessageBox::information(this, "提示", "文件打开失败！", QMessageBox::Ok, QMessageBox::Ok);
+	}
 }
 
 void ProjectOpenWnd::on_pushButton_close_clicked()

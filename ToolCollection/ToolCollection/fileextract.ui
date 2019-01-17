@@ -523,7 +523,7 @@
       </widget>
       <widget class="FileExtract2" name="tab_2">
        <attribute name="title">
-        <string>Folder/File Extract</string>
+        <string>文件夹/文件提取</string>
        </attribute>
        <layout class="QHBoxLayout" name="horizontalLayout_21"/>
       </widget>

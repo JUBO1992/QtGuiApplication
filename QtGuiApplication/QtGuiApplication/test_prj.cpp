@@ -11,6 +11,9 @@
 #include <QMenu>
 #include "projectopenwnd.h"
 #include "projectregisterwnd.h"
+#include <thread>
+
+using namespace std;
 
 
 CommonOperate * g_COperate = NULL;
@@ -207,6 +210,26 @@ void test_prj::on_pushButton_MsgWin_clicked()
 void test_prj::on_pushButton_TestBtn_clicked()
 {
 	runThread();
+
+	////通过函数指针创建线程
+	//std::thread t1(counter, 1, 6);
+	//std::thread t2(counter, 2, 4);
+	//t1.join();
+	//t2.join();
+
+	////通过函数对象创建线程
+	//std::thread t1{ Counter(1, 6) };
+	//std::thread t2((Counter(1, 6)));
+	//t1.join();
+	//t2.join();
+
+	//通过lambda表达式创建线程
+	//std::thread t1([](int id, int numIter){
+	//	for (int i = 0; i < numIter; ++i)
+	//	{
+	//		g_COperate->MsgPrint(QString("Counter %1 has value %2").arg(id).arg(i));
+	//	}
+	//}, 1, 5);
 }
 
 void test_prj::hideOrShowTabWidget()

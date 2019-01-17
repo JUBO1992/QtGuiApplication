@@ -28,4 +28,6 @@ protected:
 	int mNumIterations;
 };
 
+void counter(int id, int numIter);
+
 #endif // THREADTEST_H

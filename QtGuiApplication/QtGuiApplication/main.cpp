@@ -5,6 +5,8 @@
 int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
+	//风格可以是 "windows", "motif", "cde", "plastique", "windowsxp", or "macintosh"
+	QApplication::setStyle("Fusion");
 	//QtGuiApplication w;
 	//w.show();
 	test_prj w;

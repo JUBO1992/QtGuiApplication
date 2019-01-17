@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>YNLoginDlg</class>
+ <widget class="QDialog" name="YNLoginDlg">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>525</width>
+    <height>420</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>YNLoginDlg</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(235, 242, 249);
+font: 9pt &quot;微软雅黑&quot;;</string>
+  </property>
+  <widget class="QLabel" name="label_back">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>531</width>
+     <height>221</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-image: url(:/images/login/back.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="comboBox_name">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>240</y>
+     <width>221</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QComboBox
+{
+    background:white;
+    padding-left:5px ;
+    border-top-left-radius:3px;
+    border-top-right-radius:3px;
+    border: 1px solid rgb(209 , 209 , 209);
+}
+QComboBox:hover
+{
+    border: 1px solid rgb(21 , 131 , 221);
+}
+QComboBox::down-arrow
+{
+    border-image:url(:/images/login/down.png);
+}
+QComboBox::down-arrow:hover
+{
+    border-image:url(:/images/login/down.png);
+}
+QComboBox::down-arrow:on
+{
+    border-image:url(:/images/login/up.png);
+}
+QComboBox::drop-down
+{
+    width:20px;
+    background:transparent; /*不加此句下拉箭头背景色为灰色与整体样式不一致，也可设置 border:0px; border-radius:0px; background:white; border-left:0px ; 即设置为无边框*/
+    padding-right:5px;
+}
+QComboBox QAbstractItemView::item
+{
+    min-height:40px;
+    background:white;
+}
+QComboBox QAbstractItemView::item:selected
+{
+    min-height:40px;
+	background-color: rgb(14, 150, 254);
+}
+QComboBox QAbstractItemView::item:hover
+{
+    min-height:40px;
+	background-color: rgb(14, 150, 254);
+}
+</string>
+   </property>
+   <property name="editable">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_passwd">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>281</y>
+     <width>221</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLineEdit
+{
+    background:white;
+    padding-left:5px ;
+    padding-top:1px ;
+    border-bottom-left-radius:3px;
+    border-bottom-right-radius:3px;
+    border: 1px solid rgb(209 , 209 , 209);
+    border-top:transparent;
+}
+QLineEdit:hover
+{
+    padding-top:0px ;
+    border: 1px solid rgb(21 , 131 , 221);
+}
+</string>
+   </property>
+   <property name="echoMode">
+    <enum>QLineEdit::Password</enum>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_ok">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>350</y>
+     <width>221</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton
+{
+    color:white;
+    background-color:rgb(14 , 150 , 254);
+    border-radius:5px;
+}
+
+QPushButton:hover
+{
+    color:white;
+    background-color:rgb(44 , 137 , 255);
+}
+
+QPushButton:pressed
+{
+    color:white;
+    background-color:rgb(14 , 135 , 228);
+    padding-left:3px;
+    padding-top:3px;
+}</string>
+   </property>
+   <property name="text">
+    <string>登  录</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>240</y>
+     <width>100</width>
+     <height>100</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-image: url(:/images/login/user.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_forget">
+   <property name="geometry">
+    <rect>
+     <x>400</x>
+     <y>286</y>
+     <width>93</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton
+{
+    color:rgb(38 , 133 , 227);
+    background-color:transparent;
+}
+
+QPushButton:hover
+{
+    color:rgb(97 , 179 , 246);
+}
+
+QPushButton:pressed
+{
+    color:rgb(0 , 109 , 176);
+}
+</string>
+   </property>
+   <property name="text">
+    <string>找回密码</string>
+   </property>
+   <property name="flat">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_registration">
+   <property name="geometry">
+    <rect>
+     <x>400</x>
+     <y>246</y>
+     <width>93</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton#pushButton_registration
+{
+    color:rgb(38 , 133 , 227);
+    background-color:transparent;
+}
+
+QPushButton#pushButton_registration:hover
+{
+    color:rgb(97 , 179 , 246);
+}
+
+QPushButton#pushButton_registration:pressed
+{
+    color:rgb(0 , 109 , 176);
+}
+</string>
+   </property>
+   <property name="text">
+    <string>注册账号</string>
+   </property>
+   <property name="flat">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_close">
+   <property name="geometry">
+    <rect>
+     <x>495</x>
+     <y>15</y>
+     <width>15</width>
+     <height>15</height>
+    </rect>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel
+{
+  background-image: url(:/images/login/close.png);
+  background-color:transparent;
+}
+
+QLabel:hover
+{
+	background-color: rgb(251, 73, 45);
+}
+</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

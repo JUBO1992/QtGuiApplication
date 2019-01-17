@@ -3,6 +3,8 @@
 #include <QFileInfo>
 #include "fileextract.h"
 
+#pragma execution_character_set("utf-8")
+
 CommonOperate::CommonOperate(QObject *parent, QMainWindow *mainWin, QTextBrowser *txtbrower)
 	: QObject(parent),
 	m_mainWindow(mainWin),
@@ -98,6 +100,7 @@ bool CommonOperate::IsMsgWndVisible()
 	{
 		return wnd->isMsgWndVisible();
 	}
+	return false;
 }
 
 void CommonOperate::SetMsgWndVisible(bool visible)

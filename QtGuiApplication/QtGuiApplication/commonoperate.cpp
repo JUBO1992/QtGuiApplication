@@ -20,6 +20,7 @@ void CommonOperate::MsgPrint(QString msg)
 	{
 		return;
 	}
+	//如何实现线程安全的输出？？
 	m_textBrowser->append(msg);
 	qApp->processEvents();
 }

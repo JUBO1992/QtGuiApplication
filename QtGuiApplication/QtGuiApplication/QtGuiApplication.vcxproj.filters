@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;cxx;c;def</Extensions>
-    </Filter>
     <Filter Include="Header Files">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h</Extensions>
@@ -32,6 +28,13 @@
       <UniqueIdentifier>{7d803d53-05d6-4c4d-8c94-f3f38caafe7f}</UniqueIdentifier>
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="MarineSurvey">
+      <UniqueIdentifier>{9d4d1397-3ca6-4bfb-bef1-88909ddd118f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;cxx;c;def</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -134,20 +137,11 @@
     <ClCompile Include="threadtest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="marinebase.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="marineproject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_marineproject.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_marineproject.cpp">
       <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="metadatasqlmodel.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_metadatasqlmodel.cpp">
       <Filter>Generated Files\Debug</Filter>
@@ -155,17 +149,11 @@
     <ClCompile Include="GeneratedFiles\Release\moc_metadatasqlmodel.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="msurveymethodwnd.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_msurveymethodwnd.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_msurveymethodwnd.cpp">
       <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="projectopenwnd.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_projectopenwnd.cpp">
       <Filter>Generated Files\Debug</Filter>
@@ -173,14 +161,29 @@
     <ClCompile Include="GeneratedFiles\Release\moc_projectopenwnd.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="projectregisterwnd.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_projectregisterwnd.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_projectregisterwnd.cpp">
       <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="marinebase.cpp">
+      <Filter>MarineSurvey</Filter>
+    </ClCompile>
+    <ClCompile Include="marineproject.cpp">
+      <Filter>MarineSurvey</Filter>
+    </ClCompile>
+    <ClCompile Include="metadatasqlmodel.cpp">
+      <Filter>MarineSurvey</Filter>
+    </ClCompile>
+    <ClCompile Include="msurveymethodwnd.cpp">
+      <Filter>MarineSurvey</Filter>
+    </ClCompile>
+    <ClCompile Include="projectopenwnd.cpp">
+      <Filter>MarineSurvey</Filter>
+    </ClCompile>
+    <ClCompile Include="projectregisterwnd.cpp">
+      <Filter>MarineSurvey</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -229,29 +232,29 @@
     <CustomBuild Include="test_prj.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="marineproject.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="metadatasqlmodel.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="msurveymethodwnd.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
     <CustomBuild Include="msurveymethodwnd.ui">
       <Filter>Form Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="projectopenwnd.h">
-      <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="projectopenwnd.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="projectregisterwnd.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
     <CustomBuild Include="projectregisterwnd.ui">
       <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="msurveymethodwnd.h">
+      <Filter>MarineSurvey</Filter>
+    </CustomBuild>
+    <CustomBuild Include="metadatasqlmodel.h">
+      <Filter>MarineSurvey</Filter>
+    </CustomBuild>
+    <CustomBuild Include="marineproject.h">
+      <Filter>MarineSurvey</Filter>
+    </CustomBuild>
+    <CustomBuild Include="projectregisterwnd.h">
+      <Filter>MarineSurvey</Filter>
+    </CustomBuild>
+    <CustomBuild Include="projectopenwnd.h">
+      <Filter>MarineSurvey</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -273,9 +276,6 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="marinebase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_msurveymethodwnd.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
@@ -284,6 +284,9 @@
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_projectregisterwnd.h">
       <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="marinebase.h">
+      <Filter>MarineSurvey</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

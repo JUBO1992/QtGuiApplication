@@ -47,9 +47,9 @@ public:
 		return m_project.rasterPath();
 	}
 	//返回测量数据所在路径
-	QString surveyPath() const
+	QString surveyPath(const MSurveyMethod& method = MSurveyMethod::MSUnknown) const
 	{
-		return m_project.surveyPath();
+		return m_project.surveyPath(method);
 	}
 	//返回档案数据所在路径
 	QString archivePath() const
@@ -81,42 +81,48 @@ public:
 	{
 		rasterFiles = m_rasterFiles;
 	}
-	//获得下一个栅格文件编号
-	QString getNextRasterNO();
-	void addRasters(const QStringList& rasterPathArr);
-	void deleteRasters(const QStringList& rasterNOArr );
-	void addRaster(const QString& rasterPath);
-	void deleteRaster(const QString& rasterNO);
+	void addRasters(const QStringList& filePathArr);
+	//根据ChartNO列表删除项目中对应栅格文件，列表为空则全部删除
+	void deleteRasters(const QStringList& fileNOArr = QStringList());
+	void addRasters(const QString& dirpath);
 
 	void getSurveyList(QMap<QString, MSFileStruct>& surveyFiles)
 	{
 		surveyFiles = m_surveyFiles;
 	}
-	//获得下一个测量文件编号
-	QString getNextSurveyNO();
-	void addSurvey(QString sourcePath);
-	void deleteSurvey(MSFileStruct surveyFile);
+	void addSurveys(const QStringList& filePathArr, const MSurveyMethod& method = MSUnknown);
+	//根据DataNO列表删除项目中对应测量文件，列表为空则根据method删除对应测量方式下的所有文件
+	//DataNO列表和method都不指定则清空所有测量文件
+	void deleteSurveys(const QStringList& fileNOArr = QStringList(), const MSurveyMethod& method = MSUnknown);
+	void addSurveys(const QString& dirPath, const MSurveyMethod& method = MSUnknown);
 
 	void getArchiveList(QMap<QString, MSFileStruct>& archiveFiles)
 	{
 		archiveFiles = m_archiveFiles;
 	}
-	//获得下一个档案文件编号
-	QString getNextArchiveNO();
-	void addArchive(QString sourcePath);
-	void deleteArchive(MSFileStruct archiveFile);
+	void addArchives(const QStringList& filePathArr);
+	//根据FileNO列表删除项目中对应档案文件，列表为空则全部删除
+	void deleteArchives(const QStringList& fileNOArr = QStringList());
+	void addArchives(const QString& dirpath);
+
+	//fileNO为更新文件原编号，newName为新文件名，isOpen标记是否打开
+	void updateMSFile(const QString& fileNO, const QString& newName, const bool& isOpen = false);
+	//提交文件更新信息到数据库，如果文件名更改则同时修改文件名
+	bool commitMSFile();
 
 private:
 	void getProjectFiles();
 
-
 private:
 	MarinePrjStruct m_project;
+
 
 	QMap<QString, MSFileStruct> m_vectorFiles;	//矢量文件列表
 	QMap<QString, MSFileStruct> m_rasterFiles;	//栅格文件列表
 	QMap<QString, MSFileStruct> m_surveyFiles;	//测量文件列表
 	QMap<QString, MSFileStruct> m_archiveFiles;	//档案文件列表
+
+	QMap<QString, MSFileStruct> m_updateFiles;	//更新文件列表
 
 };
 

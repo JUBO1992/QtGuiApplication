@@ -48,11 +48,12 @@ FileExtract::FileExtract(QWidget *parent)
 
 	g_COperate = new CommonOperate(NULL, this, ui.textBrowser);
 
-	QString tabindex = GlobalConfig::GetProperty("TABWIDGETINDEX");
-	if (!tabindex.isEmpty())
-	{
-		ui.tabWidget->setCurrentIndex(tabindex.toInt());
-	}
+	ui.tabWidget->setTabEnabled(0, false);
+	ui.tabWidget->setStyleSheet("QTabBar::tab:disabled {width: 0; color: transparent;}");
+
+	int tabindex = GlobalConfig::GetProperty("TABWIDGETINDEX").toInt();
+	if (tabindex <= 0 || tabindex >= 3) tabindex = 1;
+	ui.tabWidget->setCurrentIndex(tabindex);
 }
 
 FileExtract::~FileExtract()
