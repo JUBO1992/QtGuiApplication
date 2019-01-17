@@ -6,6 +6,7 @@ x64debug
 x64release
 x86debug
 x86release/*.exe
+x86release/*.cfg
 x86release/yunnantemp
 x86release/MarineSurvey
 
