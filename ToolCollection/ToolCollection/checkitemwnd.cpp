@@ -1,6 +1,8 @@
 #include "checkitemwnd.h"
 #include <QMessageBox>
 
+#pragma execution_character_set("utf-8")
+
 CheckItemWnd::CheckItemWnd(QWidget *parent, CheckItemStruct item)
 	: QDialog(parent)
 	, m_item(item)

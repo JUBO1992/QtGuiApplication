@@ -42,7 +42,7 @@
             </size>
            </property>
            <property name="text">
-            <string>搜索路径：</string>
+            <string>搜索目录：</string>
            </property>
           </widget>
          </item>
@@ -173,7 +173,7 @@
             </size>
            </property>
            <property name="text">
-            <string>搜索列表：（可编辑）</string>
+            <string>文件列表：（可编辑）</string>
            </property>
           </widget>
          </item>
@@ -276,7 +276,7 @@
             </size>
            </property>
            <property name="text">
-            <string>提取路径：</string>
+            <string>提取目录：</string>
            </property>
           </widget>
          </item>
