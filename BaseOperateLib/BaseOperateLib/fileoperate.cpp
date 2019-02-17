@@ -16,77 +16,7 @@ FileOperate::~FileOperate()
 
 }
 
-bool FileOperate::CopyFile(const QString fromFile, const QString toFile, bool coverFileIfExist)
-{
-	//判断输入文件是否存在
-	if (!QFile::exists(fromFile)){
-		return false;
-	}
-	//判读输出与输入是否一致
-	QString dstFile = toFile;
-	dstFile.replace("\\", "/");
-	if (fromFile == dstFile){
-		return true;
-	}
-	//判读输出路径是否存在，不存在则创建输出路径
-	QString dstDir = dstFile.left(dstFile.lastIndexOf("/"));
-	QDir dir(dstDir);
-	if (!dir.exists())
-	{
-		if(!dir.mkpath(dstDir))
-			return false;
-	}
-	//判读输出文件是否存在
-	if (QFile::exists(toFile)){
-		if (coverFileIfExist){
-			QFile::remove(dstFile);
-		}
-	}
-	//拷贝文件
-	if (!QFile::copy(fromFile, dstFile))
-	{
-		return false;
-	}
-	return true;
-}
-
-bool FileOperate::CopyDir(const QString fromDir, const QString toDir, bool coverFileIfExist)
-{
-	QDir sourceDir(fromDir);
-	QDir targetDir(toDir);
-	if (!targetDir.exists()){    /**< 如果目标目录不存在，则进行创建 */
-		//if (!targetDir.mkdir(targetDir.absolutePath()))
-		if (!targetDir.mkpath(toDir))
-			return false;
-	}
-
-	QFileInfoList fileInfoList = sourceDir.entryInfoList();
-	foreach(QFileInfo fileInfo, fileInfoList){
-		if (fileInfo.fileName() == "." || fileInfo.fileName() == "..")
-			continue;
-
-		if (fileInfo.isDir()){    /**< 当为目录时，递归的进行copy */
-			if (!CopyDir(fileInfo.filePath(),
-				targetDir.filePath(fileInfo.fileName()),
-				coverFileIfExist))
-				return false;
-		}
-		else{            /**< 当允许覆盖操作时，将旧文件进行删除操作 */
-			if (coverFileIfExist && targetDir.exists(fileInfo.fileName())){
-				targetDir.remove(fileInfo.fileName());
-			}
-
-			/// 进行文件copy  
-			if (!QFile::copy(fileInfo.filePath(),
-				targetDir.filePath(fileInfo.fileName()))){
-				return false;
-			}
-		}
-	}
-	return true;
-}
-
-bool FileOperate::CopyFileOrDir(const QString from, const QString to, bool coverFileIfExist)
+bool FileOperate::CopyFileOrDir(const QString& from, const QString& to, bool coverFileIfExist)
 {
 	QFileInfo info(from);
 	if (info.isFile())
@@ -100,7 +30,50 @@ bool FileOperate::CopyFileOrDir(const QString from, const QString to, bool cover
 	return false;
 }
 
-QStringList FileOperate::GetFileDirsFromList(const QString fromDir, const QStringList list, 
+bool FileOperate::DelFileOrDir(const QString& path)
+{
+	QFileInfo info(path);
+	if (!info.exists())
+	{
+		return true;
+	}
+	if (info.isFile())
+	{
+		return DeleteFile(path);
+	}
+	if (info.isDir())
+	{
+		return DeleteDir(path);
+	}
+	return false;
+}
+
+QStringList FileOperate::SearchFilesInDir(const QString& folder)
+{
+	QStringList list;
+	QFileInfo info(folder);
+	if (!info.isDir() || !info.exists())
+	{
+		return QStringList();
+	}
+	QDir dir(folder);
+	dir.setFilter(QDir::AllEntries | QDir::NoDotAndDotDot); //设置过滤
+	QFileInfoList fileInfoList = dir.entryInfoList();
+	foreach(QFileInfo fileInfo, fileInfoList)
+	{
+		if (fileInfo.isDir())
+		{
+			list << SearchFilesInDir(fileInfo.filePath());
+		}
+		else
+		{
+			list << fileInfo.filePath();
+		}
+	}
+	return list;
+}
+
+QStringList FileOperate::GetFileDirsFromList(const QString& fromDir, const QStringList& list,
 	bool fuzzy /*= false*/, bool recursion /*= true*/, bool searchFile /*= true*/, bool searchDir /*= true*/)
 {
 	QStringList result;
@@ -141,7 +114,7 @@ QStringList FileOperate::GetFileDirsFromList(const QString fromDir, const QStrin
 	return result;
 }
 
-QStringList FileOperate::GetFileDirsFromList(const QString fromDir, const QStringList list, QMap<QString, QStringList> &searchresult, 
+QStringList FileOperate::GetFileDirsFromList(const QString& fromDir, const QStringList& list, QMap<QString, QStringList> &searchresult, 
 	bool fuzzy /*= false*/, bool recursion /*= true*/, bool searchFile /*= true*/, bool searchDir /*= true*/)
 {
 	QStringList result;
@@ -209,7 +182,105 @@ QStringList FileOperate::GetFileDirsFromList(const QString fromDir, const QStrin
 	return result;
 }
 
-bool FileOperate::FuzzySearch(const QString fname, const QStringList list, bool fuzzy /*= false*/)
+bool FileOperate::CopyFile(const QString& fromFile, const QString& toFile, bool coverFileIfExist)
+{
+	//判断输入文件是否存在
+	if (!QFile::exists(fromFile)){
+		return false;
+	}
+	//判读输出与输入是否一致
+	QString dstFile = toFile;
+	dstFile.replace("\\", "/");
+	if (fromFile == dstFile){
+		return true;
+	}
+	//判读输出路径是否存在，不存在则创建输出路径
+	QString dstDir = dstFile.left(dstFile.lastIndexOf("/"));
+	QDir dir(dstDir);
+	if (!dir.exists())
+	{
+		if(!dir.mkpath(dstDir))
+			return false;
+	}
+	//判读输出文件是否存在
+	if (QFile::exists(toFile)){
+		if (coverFileIfExist){
+			QFile::remove(dstFile);
+		}
+	}
+	//拷贝文件
+	if (!QFile::copy(fromFile, dstFile))
+	{
+		return false;
+	}
+	return true;
+}
+
+bool FileOperate::CopyDir(const QString& fromDir, const QString& toDir, bool coverFileIfExist)
+{
+	QDir sourceDir(fromDir);
+	QDir targetDir(toDir);
+	if (!targetDir.exists()){    /**< 如果目标目录不存在，则进行创建 */
+		if (!targetDir.mkpath(toDir))
+			return false;
+	}
+
+	QFileInfoList fileInfoList = sourceDir.entryInfoList();
+	foreach(QFileInfo fileInfo, fileInfoList){
+		if (fileInfo.fileName() == "." || fileInfo.fileName() == "..")
+			continue;
+
+		if (fileInfo.isDir()){    /**< 当为目录时，递归的进行copy */
+			if (!CopyDir(fileInfo.filePath(),
+				targetDir.filePath(fileInfo.fileName()),
+				coverFileIfExist))
+				return false;
+		}
+		else{            /**< 当允许覆盖操作时，将旧文件进行删除操作 */
+			if (coverFileIfExist && targetDir.exists(fileInfo.fileName())){
+				targetDir.remove(fileInfo.fileName());
+			}
+
+			/// 进行文件copy  
+			if (!QFile::copy(fileInfo.filePath(),
+				targetDir.filePath(fileInfo.fileName()))){
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+bool FileOperate::DeleteFile(const QString& file)
+{
+	if (!QFileInfo(file).isFile()) return false;
+	return QFile::remove(file);
+}
+
+bool FileOperate::DeleteDir(const QString& folder)
+{
+	if (!QFileInfo(folder).isDir()) return false;
+	QDir dir(folder);
+	dir.setFilter(QDir::AllEntries | QDir::NoDotAndDotDot); //设置过滤
+	QFileInfoList fileList = dir.entryInfoList(); // 获取所有的文件信息
+	foreach(QFileInfo file, fileList)
+	{ //遍历文件信息
+		if (file.isFile())
+		{ // 是文件，删除
+			if (!file.dir().remove(file.fileName()))
+			{// 删除失败则返回false
+				return false;
+			}
+		}
+		else
+		{ // 递归删除
+			DelFileOrDir(file.filePath());
+		}
+	}
+	return QFileInfo(folder).dir().rmdir(dir.dirName()); // 删除文件夹
+}
+
+bool FileOperate::FuzzySearch(const QString& fname, const QStringList& list, bool fuzzy /*= false*/)
 {
 	if (fuzzy)
 	{
@@ -233,7 +304,7 @@ bool FileOperate::FuzzySearch(const QString fname, const QStringList list, bool 
 	return false;
 }
 
-QString FileOperate::FuzzySearch2(const QString fname, const QStringList list, bool fuzzy /*= false*/)
+QString FileOperate::FuzzySearch2(const QString& fname, const QStringList& list, bool fuzzy /*= false*/)
 {
 	if (fuzzy)
 	{

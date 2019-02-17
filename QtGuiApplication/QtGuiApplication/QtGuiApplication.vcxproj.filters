@@ -185,6 +185,27 @@
     <ClCompile Include="projectregisterwnd.cpp">
       <Filter>MarineSurvey</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_extrafilescheckwnd.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_extrafilescheckwnd.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_filenamesetwnd.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_filenamesetwnd.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="extrafilescheckwnd.cpp">
+      <Filter>MarineSurvey</Filter>
+    </ClCompile>
+    <ClCompile Include="filenamesetwnd.cpp">
+      <Filter>MarineSurvey</Filter>
+    </ClCompile>
+    <ClCompile Include="marineprjfunc.cpp">
+      <Filter>MarineSurvey</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="qtguiapplication.h">
@@ -256,6 +277,18 @@
     <CustomBuild Include="projectopenwnd.h">
       <Filter>MarineSurvey</Filter>
     </CustomBuild>
+    <CustomBuild Include="extrafilescheckwnd.h">
+      <Filter>MarineSurvey</Filter>
+    </CustomBuild>
+    <CustomBuild Include="filenamesetwnd.h">
+      <Filter>MarineSurvey</Filter>
+    </CustomBuild>
+    <CustomBuild Include="extrafilescheckwnd.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="filenamesetwnd.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_qtguiapplication.h">
@@ -287,6 +320,15 @@
     </ClInclude>
     <ClInclude Include="marinebase.h">
       <Filter>MarineSurvey</Filter>
+    </ClInclude>
+    <ClInclude Include="marineprjfunc.h">
+      <Filter>MarineSurvey</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_extrafilescheckwnd.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_filenamesetwnd.h">
+      <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,17 +1,21 @@
 ﻿#include "projectregisterwnd.h"
-//#include "idatainterface.h"
 #include <QSqlDatabase>
 #include <QSqlField>
 #include <QCompleter>
+#include <QListWidgetItem>
+#include <QDesktopServices>
+#include <QMenu>
 #include <QMessageBox>
 #include <QDir>
 #include <QFileDialog>
-#include <QMenu>
 #include "msurveymethodwnd.h"
+#include "filenamesetwnd.h"
+#include "marineprjfunc.h"
+#include "extrafilescheckwnd.h"
 
 #pragma execution_character_set("utf-8")
 
-//extern iDataInterface* g_pInterface;
+extern QString g_curOpenPrjID;
 
 ProjectRegisterWnd::ProjectRegisterWnd(QWidget *parent, QString projectID)
 	: QDialog(parent)
@@ -22,10 +26,34 @@ ProjectRegisterWnd::ProjectRegisterWnd(QWidget *parent, QString projectID)
 	, m_isUpdateWnd(true)
 {
 	ui.setupUi(this);
-	QColor qclr(129, 168, 211);
-	QPalette palette;
-	palette.setBrush(this->backgroundRole(), qclr);
-	this->setPalette(palette);
+
+
+	ui.listWidget_vector->setContextMenuPolicy(Qt::CustomContextMenu);
+	ui.tableView_raster->setContextMenuPolicy(Qt::CustomContextMenu);
+	ui.tableView_survey->setContextMenuPolicy(Qt::CustomContextMenu);
+	ui.tableView_archive->setContextMenuPolicy(Qt::CustomContextMenu);
+	m_pRightMenu = new QMenu;
+	m_pDeleteAction = new QAction("删除", this);
+	m_pAddAction = new QAction("导入", this);
+	m_pOpenDirAction = new QAction("打开所在目录", this);
+
+	m_pRightMenu->addAction(m_pDeleteAction);
+	m_pRightMenu->addAction(m_pAddAction);
+	m_pRightMenu->addAction(m_pOpenDirAction);
+
+	connect(ui.listWidget_vector, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(clicked_rightMenu(QPoint)));
+	connect(ui.tableView_raster, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(clicked_rightMenu(QPoint)));
+	connect(ui.tableView_survey, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(clicked_rightMenu(QPoint)));
+	connect(ui.tableView_archive, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(clicked_rightMenu(QPoint)));
+	connect(m_pDeleteAction, SIGNAL(triggered()), this, SLOT(clicked_deleteAction()));
+	connect(m_pAddAction, SIGNAL(triggered()), this, SLOT(clicked_addAction()));
+	connect(m_pOpenDirAction, SIGNAL(triggered()), this, SLOT(clicked_openDirAction()));
+
+	//限制输入，其中不能出现<>\/:*?"|
+	QRegExp rx = QRegExp("[^<>\\\\/:*?\"|]*");
+	QRegExpValidator *validator = new QRegExpValidator(rx);
+	ui.comboBox_projectID->setValidator(validator);
+	ui.comboBox_projectName->setValidator(validator);
 
 	UpdateProjectMenu(m_projectMap);
 	auto it = m_projectMap.find(projectID);
@@ -35,25 +63,6 @@ ProjectRegisterWnd::ProjectRegisterWnd(QWidget *parent, QString projectID)
 	}
 	ui.tabWidget_survey->setCurrentIndex(0);
 	initWnd();
-
-	ui.tableView_raster->setContextMenuPolicy(Qt::CustomContextMenu);
-	ui.tableView_survey->setContextMenuPolicy(Qt::CustomContextMenu);
-	ui.tableView_archive->setContextMenuPolicy(Qt::CustomContextMenu);
-	m_pRightMenu = new QMenu;
-	m_pDeleteAction = new QAction("删除", this);
-
-	m_pRightMenu->addAction(m_pDeleteAction);
-
-	connect(ui.tableView_raster, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(clicked_rightMenu(QPoint)));
-	connect(ui.tableView_survey, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(clicked_rightMenu(QPoint)));
-	connect(ui.tableView_archive, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(clicked_rightMenu(QPoint)));
-	connect(m_pDeleteAction, SIGNAL(triggered()), this, SLOT(clicked_deleteAction()));
-
-	//限制输入，其中不能出现<>\/:*?"|
-	QRegExp rx = QRegExp("[^<>\\\\/:*?\"|]*");
-	QRegExpValidator *validator = new QRegExpValidator(rx);
-	ui.comboBox_projectID->setValidator(validator);
-	ui.comboBox_projectName->setValidator(validator);
 }
 
 ProjectRegisterWnd::~ProjectRegisterWnd()
@@ -80,9 +89,13 @@ void ProjectRegisterWnd::clearComboBox()
 	ui.comboBox_projectType->clear();
 	ui.comboBox_projectEngineer->clear();
 	ui.comboBox_surveyTeam->clear();
-	ui.comboBox_surveyPrj->clear();
 	ui.comboBox_surveyCoor->clear();
+	ui.comboBox_surveyPrj->clear();
 	ui.comboBox_surveyType->clear();
+	ui.dateEdit_surveyStart->setDate(QDate::currentDate());
+	ui.dateEdit_surveyEnd->setDate(QDate::currentDate());
+	ui.dateEdit_chartStart->setDate(QDate::currentDate());
+	ui.dateEdit_chartEnd->setDate(QDate::currentDate());
 
 	QCompleter *completer = new QCompleter(m_projectMap.keys(), this);
 	completer->setCaseSensitivity(Qt::CaseInsensitive);
@@ -97,7 +110,8 @@ void ProjectRegisterWnd::clearComboBox()
 
 void ProjectRegisterWnd::updateWnd()
 {
-	ui.tab_2->setEnabled(false);
+	//ui.tab_2->setEnabled(false);
+	updateListWidget();
 	ui.tab_3->setEnabled(false);
 	ui.tab_4->setEnabled(false);
 	ui.tab_5->setEnabled(false);
@@ -108,9 +122,13 @@ void ProjectRegisterWnd::updateWnd()
 	ui.comboBox_projectType->setCurrentText(QString());
 	ui.comboBox_projectEngineer->setCurrentText(QString());
 	ui.comboBox_surveyTeam->setCurrentText(QString());
-	ui.comboBox_surveyPrj->setCurrentText(QString());
 	ui.comboBox_surveyCoor->setCurrentText(QString());
+	ui.comboBox_surveyPrj->setCurrentText(QString());
 	ui.comboBox_surveyType->setCurrentText(QString());
+	ui.dateEdit_surveyStart->setDate(QDate::currentDate());
+	ui.dateEdit_surveyEnd->setDate(QDate::currentDate());
+	ui.dateEdit_chartStart->setDate(QDate::currentDate());
+	ui.dateEdit_chartEnd->setDate(QDate::currentDate());
 	if (m_pCurMarinePrj->isValid())
 	{
 		MarinePrjStruct curProject = m_pCurMarinePrj->getMarinePrjStruct();
@@ -120,14 +138,17 @@ void ProjectRegisterWnd::updateWnd()
 		ui.comboBox_projectType->setCurrentText(curProject._prjType);
 		ui.comboBox_projectEngineer->setCurrentText(curProject._prjEngineer);
 		ui.comboBox_surveyTeam->setCurrentText(curProject._surveyTeam);
-		ui.comboBox_surveyPrj->setCurrentText(curProject._surveyPrj);
 		ui.comboBox_surveyCoor->setCurrentText(curProject._surveyCoor);
+		ui.comboBox_surveyPrj->setCurrentText(curProject._surveyPrj);
 		ui.comboBox_surveyType->setCurrentText(curProject._surveyType);
-		ui.tab_2->setEnabled(true);
+		ui.dateEdit_surveyStart->setDate(curProject._surveySTime);
+		ui.dateEdit_surveyEnd->setDate(curProject._surveyETime);
+		ui.dateEdit_chartStart->setDate(curProject._chartSTime);
+		ui.dateEdit_chartEnd->setDate(curProject._chartETime);
 		ui.pushButton_delete->setEnabled(true);
 
 		destory();
-		opendb();
+		opendb();//opendb前必须先destory
 	}
 }
 
@@ -186,21 +207,24 @@ void ProjectRegisterWnd::destory()
 	if (m_pRasterModel)
 	{
 		//m_pRasterModel->submitAll();
-		m_pRasterModel->clear();
+		//m_pRasterModel->clear();
+		ui.tableView_raster->setModel(NULL);
 		delete m_pRasterModel;
 		m_pRasterModel = NULL;
 	}
 	if (m_pSurveyModel)
 	{
 		//m_pSurveyModel->submitAll();
-		m_pSurveyModel->clear();
+		//m_pSurveyModel->clear();
+		ui.tableView_survey->setModel(NULL);
 		delete m_pSurveyModel;
 		m_pSurveyModel = NULL;
 	}
 	if (m_pArchiveModel)
 	{
 		//m_pArchiveModel->submitAll();
-		m_pArchiveModel->clear();
+		//m_pArchiveModel->clear();
+		ui.tableView_archive->setModel(NULL);
 		delete m_pArchiveModel;
 		m_pArchiveModel = NULL;
 	}
@@ -248,9 +272,54 @@ bool ProjectRegisterWnd::initArchiveModel(bool isSQL /*= false*/)
 	return true;
 }
 
+void ProjectRegisterWnd::showEvent(QShowEvent *)
+{
+	UpdateProjectMenu(m_projectMap);
+	auto it = m_projectMap.find(g_curOpenPrjID);
+	if (it != m_projectMap.end())
+	{
+		m_pCurMarinePrj->setNewMarinePrj(it.value());
+	}
+	ui.tabWidget_survey->setCurrentIndex(0);
+	initWnd();
+}
+
 void ProjectRegisterWnd::closeEvent(QCloseEvent *)
 {
 	destory();
+}
+
+void ProjectRegisterWnd::updateListWidget()
+{
+	if (m_pCurMarinePrj->isValid())
+	{
+		ui.tab_2->setEnabled(true);
+		ui.listWidget_vector->clear();
+		QMap<QString, MSFileStruct> files;
+		m_pCurMarinePrj->getVectorList(files);
+		int i = 0; 
+		for (auto it = files.begin(); it != files.end(); ++it)
+		{
+			QListWidgetItem* item = new QListWidgetItem;
+			item->setSizeHint(QSize(100, 25));
+			item->setText(it->fileName());
+			ui.listWidget_vector->addItem(item);
+			if (i%2 == 0)
+			{
+				item->setBackgroundColor(QColor(229, 244, 236));
+			}
+			else
+			{
+				item->setBackgroundColor(QColor(230, 245, 250));
+			}
+			i++;
+		}
+	}
+	else
+	{
+		ui.listWidget_vector->clear();
+		ui.tab_2->setEnabled(false);
+	}
 }
 
 void ProjectRegisterWnd::on_pushButton_saveProject_clicked()
@@ -276,6 +345,10 @@ void ProjectRegisterWnd::on_pushButton_saveProject_clicked()
 	marine._surveyPrj = ui.comboBox_surveyPrj->currentText();
 	marine._surveyCoor = ui.comboBox_surveyCoor->currentText();
 	marine._surveyType = ui.comboBox_surveyType->currentText();
+	marine._surveySTime = ui.dateEdit_surveyStart->date();
+	marine._surveyETime = ui.dateEdit_surveyEnd->date();
+	marine._chartSTime = ui.dateEdit_chartStart->date();
+	marine._chartETime = ui.dateEdit_chartEnd->date();
 	//if (m_projectMap.find(marine._prjID) != m_projectMap.end())
 	//{
 	//	QMessageBox::information(this, "提示", "工程编号已存在，请修改工程编号！", QMessageBox::Ok, QMessageBox::Ok);
@@ -287,7 +360,7 @@ void ProjectRegisterWnd::on_pushButton_saveProject_clicked()
 		if (m_projectMap.find(marine._prjID) != m_projectMap.end())
 		{
 			saveFlag = ModifyCur;
-			if (QMessageBox::Yes != QMessageBox::information(this, "提示", QString("是否确认更新编号为'%1'的工程？").arg(m_pCurMarinePrj->getMarinePrjStruct()._prjID),
+			if (QMessageBox::Yes != QMessageBox::information(this, "提示", QString("确认更新编号为'%1'的工程？").arg(m_pCurMarinePrj->getMarinePrjStruct()._prjID),
 				QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes))
 			{
 				return;
@@ -414,23 +487,12 @@ void ProjectRegisterWnd::on_pushButton_newDatabase_clicked()
 		QMessageBox::information(this, "提示", "无'矢量数据'文件夹，请重建项目！", QMessageBox::Ok, QMessageBox::Ok);
 		return;
 	}
-	QString mdbpath = vectorpath + "/" + curProject._prjID + ".mdb";
-	if (QFileInfo(mdbpath).exists())
-	{
-		if (QMessageBox::Yes != QMessageBox::information(this, "提示", "数据库已存在，是否覆盖？", QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes))
-		{
-			return;
-		}
-	}
-	bool isSuccess = false;//g_pInterface->newMDB("123456.mdb", "arcgis10.mdt", "海测.db");
-	if (isSuccess)
-	{
-		QMessageBox::information(this, "提示", "新建数据库成功！", QMessageBox::Ok, QMessageBox::Ok);
-	}
-	else
-	{
-		QMessageBox::information(this, "提示", "新建数据库失败！", QMessageBox::Ok, QMessageBox::Ok);
-	}
+	FileNameSetWnd wnd(this, curProject._prjID);
+	if (wnd.exec() != QDialog::Accepted)
+		return;
+	m_pCurMarinePrj->createVector(wnd.getFileName(), wnd.getTemplate());
+	//需要刷一下listWidget_vector
+	updateListWidget();
 }
 
 void ProjectRegisterWnd::on_pushButton_importDatabase_clicked()
@@ -443,23 +505,21 @@ void ProjectRegisterWnd::on_pushButton_importDatabase_clicked()
 		return;
 	}
 	QString tempdir = MSGetProperty("MS_VECTOR_PATH").toString();
-	QString mdbfilepath = QFileDialog::getOpenFileName(this, "请选择要导入的矢量数据库", tempdir, "mdb files(*.mdb)");
-	if (mdbfilepath.isEmpty())
+	QStringList filenames = QFileDialog::getOpenFileNames(this, "请选择要导入的矢量数据库", tempdir, "mdb files(*.mdb)");
+	if (filenames.size() == 0)
 	{
 		return;
 	}
-	QString topath = vectorpath + "/" + curProject._prjID + ".mdb";
-	if (QFileInfo(topath).exists())
-	{
-		if (QMessageBox::Yes != QMessageBox::information(this, "提示", "数据库已存在，是否覆盖？", QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes))
-		{
-			return;
-		}
-	}
-	tempdir = QFileInfo(mdbfilepath).absolutePath();
+	tempdir = QFileInfo(filenames.at(0)).absolutePath();
 	MSSetProperty("MS_VECTOR_PATH", tempdir);
-	CopyFileOrDir(mdbfilepath, topath);
-	QMessageBox::information(this, "提示", "矢量数据导入成功！", QMessageBox::Ok, QMessageBox::Ok);
+	m_pCurMarinePrj->addVectors(filenames);
+	//需要刷一下listWidget_vector
+	updateListWidget();
+}
+
+void ProjectRegisterWnd::on_listWidget_vector_clicked(QModelIndex idx)
+{
+
 }
 
 void ProjectRegisterWnd::on_pushButton_importRaster_clicked()
@@ -486,7 +546,10 @@ void ProjectRegisterWnd::on_pushButton_importRaster_clicked()
 
 void ProjectRegisterWnd::on_pushButton_updateRasterMD_clicked()
 {
-
+	ExtraFilesCheckWnd wnd(this);
+	wnd.setParameters(m_pCurMarinePrj, MSFileEnum::RasterFile);
+	wnd.showDialog();
+	m_pRasterModel->select();
 }
 
 void ProjectRegisterWnd::on_pushButton_saveRasterMD_clicked()
@@ -531,7 +594,10 @@ void ProjectRegisterWnd::on_pushButton_importSurvey_clicked()
 
 void ProjectRegisterWnd::on_pushButton_updateSurveyMD_clicked()
 {
-
+	ExtraFilesCheckWnd wnd(this);
+	wnd.setParameters(m_pCurMarinePrj, MSFileEnum::SurveyFile);
+	wnd.showDialog();
+	m_pSurveyModel->select();
 }
 
 void ProjectRegisterWnd::on_pushButton_saveSurveyMD_clicked()
@@ -570,7 +636,10 @@ void ProjectRegisterWnd::on_pushButton_importArchive_clicked()
 
 void ProjectRegisterWnd::on_pushButton_updateArchiveMD_clicked()
 {
-
+	ExtraFilesCheckWnd wnd(this);
+	wnd.setParameters(m_pCurMarinePrj, MSFileEnum::ArchiveFile);
+	wnd.showDialog();
+	m_pArchiveModel->select();
 }
 
 void ProjectRegisterWnd::on_pushButton_saveArchiveMD_clicked()
@@ -588,7 +657,11 @@ void ProjectRegisterWnd::on_tableView_archive_clicked(QModelIndex idx)
 void ProjectRegisterWnd::clicked_rightMenu(const QPoint &pos)
 {
 	QModelIndexList list;
-	if (ui.tabWidget_survey->currentIndex() == 2)
+	if (ui.tabWidget_survey->currentIndex() == 1)
+	{
+		list = ui.listWidget_vector->selectionModel()->selectedRows();
+	}
+	else if (ui.tabWidget_survey->currentIndex() == 2)
 	{
 		list = ui.tableView_raster->selectionModel()->selectedRows();
 	}
@@ -604,10 +677,12 @@ void ProjectRegisterWnd::clicked_rightMenu(const QPoint &pos)
 	if (list.size() > 0)
 	{
 		m_pDeleteAction->setEnabled(true);
+		m_pOpenDirAction->setEnabled(true);
 	}
 	else
 	{
 		m_pDeleteAction->setEnabled(false);
+		m_pOpenDirAction->setEnabled(false);
 	}
 	m_pRightMenu->exec(QCursor::pos()); // 菜单出现的位置为当前鼠标的位置
 
@@ -616,7 +691,22 @@ void ProjectRegisterWnd::clicked_rightMenu(const QPoint &pos)
 void ProjectRegisterWnd::clicked_deleteAction()
 {
 	QModelIndexList list;
-	if (ui.tabWidget_survey->currentIndex() == 2)
+	if (ui.tabWidget_survey->currentIndex() == 1)
+	{
+		QList<QListWidgetItem*> itemlist = ui.listWidget_vector->selectedItems();
+		QStringList fileList;
+		for (int i = 0; i < itemlist.size(); ++i)
+		{
+			fileList << itemlist.at(i)->text();
+		}
+		if (QMessageBox::Yes != QMessageBox::information(NULL, "提示", "确认删除矢量文件？", QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes))
+		{
+			return;
+		}
+		m_pCurMarinePrj->deleteVectors(fileList);
+		updateListWidget();
+	}
+	else if (ui.tabWidget_survey->currentIndex() == 2)
 	{
 		list = ui.tableView_raster->selectionModel()->selectedRows();
 		QStringList fileNOList = m_pRasterModel->getFileNOList(list);
@@ -636,5 +726,45 @@ void ProjectRegisterWnd::clicked_deleteAction()
 		QStringList fileNOList = m_pArchiveModel->getFileNOList(list);
 		m_pCurMarinePrj->deleteArchives(fileNOList);
 		m_pArchiveModel->select();
+	}
+}
+
+void ProjectRegisterWnd::clicked_addAction()
+{
+	if (ui.tabWidget_survey->currentIndex() == 1)
+	{
+		on_pushButton_importDatabase_clicked();
+	}
+	else if (ui.tabWidget_survey->currentIndex() == 2)
+	{
+		on_pushButton_importRaster_clicked();
+	}
+	else if (ui.tabWidget_survey->currentIndex() == 3)
+	{
+		on_pushButton_importSurvey_clicked();
+	}
+	else if (ui.tabWidget_survey->currentIndex() == 4)
+	{
+		on_pushButton_importArchive_clicked();
+	}
+}
+
+void ProjectRegisterWnd::clicked_openDirAction()
+{
+	if (ui.tabWidget_survey->currentIndex() == 1)
+	{
+		QDesktopServices::openUrl(QUrl::fromLocalFile(m_pCurMarinePrj->vectorPath()));
+	}
+	else if (ui.tabWidget_survey->currentIndex() == 2)
+	{
+		QDesktopServices::openUrl(QUrl::fromLocalFile(m_pCurMarinePrj->rasterPath()));
+	}
+	else if (ui.tabWidget_survey->currentIndex() == 3)
+	{
+		QDesktopServices::openUrl(QUrl::fromLocalFile(m_pCurMarinePrj->surveyPath()));
+	}
+	else if (ui.tabWidget_survey->currentIndex() == 4)
+	{
+		QDesktopServices::openUrl(QUrl::fromLocalFile(m_pCurMarinePrj->archivePath()));
 	}
 }

@@ -56,6 +56,9 @@
     <ClCompile Include="commonfunc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="compresstool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="baseoperatelib.h">
@@ -76,6 +79,9 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="commonfunc.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="compresstool.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>

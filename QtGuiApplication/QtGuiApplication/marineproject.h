@@ -4,6 +4,7 @@
 #include <QObject>
 #include "marinebase.h"
 
+//CMarineProject是对MarinePrjStruct的扩展
 class CMarineProject : public QObject
 {
 	Q_OBJECT
@@ -71,12 +72,26 @@ public:
 	{
 		return m_project.archiveMDPath();
 	}
+	//返回.idata工程文件路径
+	QString idataPrjPath() const
+	{
+		return m_project.idataPrjPath();
+	}
 
+
+	/*-------------------------矢量数据相关操作----------------------------*/
 	void getVectorList(QMap<QString, MSFileStruct>& vectorFiles)
 	{
 		vectorFiles = m_vectorFiles;
 	}
+	//根据文件名（不包含路径）及模板（全路径）创建矢量数据
+	void createVector(const QString& fileName, const QString& tempPath = QString());
+	void addVectors(const QStringList& filePathArr);
+	//根据传入的文件名列表（不包含路径）删除矢量文件
+	void deleteVectors(const QStringList& fileNameArr);
 
+
+	/*-------------------------栅格数据相关操作----------------------------*/
 	void getRasterList(QMap<QString, MSFileStruct>& rasterFiles)
 	{
 		rasterFiles = m_rasterFiles;
@@ -86,6 +101,8 @@ public:
 	void deleteRasters(const QStringList& fileNOArr = QStringList());
 	void addRasters(const QString& dirpath);
 
+
+	/*-------------------------测量数据相关操作----------------------------*/
 	void getSurveyList(QMap<QString, MSFileStruct>& surveyFiles)
 	{
 		surveyFiles = m_surveyFiles;
@@ -96,6 +113,8 @@ public:
 	void deleteSurveys(const QStringList& fileNOArr = QStringList(), const MSurveyMethod& method = MSUnknown);
 	void addSurveys(const QString& dirPath, const MSurveyMethod& method = MSUnknown);
 
+
+	/*-------------------------档案数据相关操作----------------------------*/
 	void getArchiveList(QMap<QString, MSFileStruct>& archiveFiles)
 	{
 		archiveFiles = m_archiveFiles;
@@ -105,10 +124,15 @@ public:
 	void deleteArchives(const QStringList& fileNOArr = QStringList());
 	void addArchives(const QString& dirpath);
 
+
 	//fileNO为更新文件原编号，newName为新文件名，isOpen标记是否打开
 	void updateMSFile(const QString& fileNO, const QString& newName, const bool& isOpen = false);
 	//提交文件更新信息到数据库，如果文件名更改则同时修改文件名
 	bool commitMSFile();
+
+
+	//获取项目中的多余文件（即没有索引，在元数据中没有记录的文件），返回相对路径
+	QStringList getExtraFiles(const MSFileEnum& ftype, const MSurveyMethod& method = MSUnknown);
 
 private:
 	void getProjectFiles();

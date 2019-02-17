@@ -12,8 +12,17 @@ public:
 	GlobalConfig(QObject *parent);
 	~GlobalConfig();
 
-	//key-value中不能有#
+	/*
+	@brief 设置属性值，key-value形式，key-value中不能有#
+	@param[in] key 属性名称
+	@param[in] value 属性值
+	*/
 	static void SetProperty(const QString& key, const QString& value);
+	/*
+	@brief 获取属性值
+	@param[in] key 属性名称
+	@return 属性值
+	*/
 	static QString GetProperty(const QString& key);
 
 private:

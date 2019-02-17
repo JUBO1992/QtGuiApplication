@@ -6,253 +6,283 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>504</width>
-    <height>407</height>
+    <width>700</width>
+    <height>450</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>项目登记</string>
   </property>
-  <property name="autoFillBackground">
-   <bool>true</bool>
-  </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
+  <layout class="QGridLayout" name="gridLayout_6">
+   <item row="0" column="0">
     <widget class="QTabWidget" name="tabWidget_survey">
-     <property name="autoFillBackground">
-      <bool>true</bool>
-     </property>
      <property name="currentIndex">
       <number>0</number>
      </property>
      <widget class="QWidget" name="tab">
-      <property name="autoFillBackground">
-       <bool>true</bool>
-      </property>
       <attribute name="title">
        <string>项目信息</string>
       </attribute>
-      <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,1,0">
-       <item>
-        <spacer name="horizontalSpacer_3">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
+      <layout class="QGridLayout" name="gridLayout_7">
+       <item row="1" column="0">
+        <widget class="QPushButton" name="pushButton_saveProject">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
+         <property name="text">
+          <string>保存</string>
          </property>
-        </spacer>
+        </widget>
        </item>
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout_2" stretch="8,1">
-         <item>
-          <layout class="QGridLayout" name="gridLayout_2" columnstretch="0,1" columnminimumwidth="0,0">
-           <item row="0" column="0">
-            <widget class="QLabel" name="label">
-             <property name="text">
-              <string>项目编号</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QComboBox" name="comboBox_projectID">
-             <property name="editable">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_2">
-             <property name="text">
-              <string>项目名称</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QComboBox" name="comboBox_projectName">
-             <property name="editable">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_3">
-             <property name="text">
-              <string>项目类型</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QComboBox" name="comboBox_projectType">
-             <property name="editable">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="label_4">
-             <property name="text">
-              <string>项目工程师</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1">
-            <widget class="QComboBox" name="comboBox_projectEngineer">
-             <property name="editable">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="0">
-            <widget class="QLabel" name="label_5">
-             <property name="text">
-              <string>测量队伍</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="1">
-            <widget class="QComboBox" name="comboBox_surveyTeam">
-             <property name="editable">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="0">
-            <widget class="QLabel" name="label_6">
-             <property name="text">
-              <string>测量投影</string>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="1">
-            <widget class="QComboBox" name="comboBox_surveyPrj">
-             <property name="editable">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="6" column="0">
-            <widget class="QLabel" name="label_7">
-             <property name="text">
-              <string>测量坐标系</string>
-             </property>
-            </widget>
-           </item>
-           <item row="6" column="1">
-            <widget class="QComboBox" name="comboBox_surveyCoor">
-             <property name="editable">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="7" column="0">
-            <widget class="QLabel" name="label_8">
-             <property name="layoutDirection">
-              <enum>Qt::LeftToRight</enum>
-             </property>
-             <property name="autoFillBackground">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>测量性质</string>
-             </property>
-            </widget>
-           </item>
-           <item row="7" column="1">
-            <widget class="QComboBox" name="comboBox_surveyType">
-             <property name="editable">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-          </layout>
+       <item row="0" column="0" colspan="3">
+        <layout class="QGridLayout" name="gridLayout_2">
+         <item row="6" column="1" colspan="3">
+          <widget class="QComboBox" name="comboBox_surveyCoor">
+           <property name="editable">
+            <bool>true</bool>
+           </property>
+          </widget>
          </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout">
-           <item>
-            <widget class="QPushButton" name="pushButton_saveProject">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string>保存</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="pushButton_delete">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string>删除</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="pushButton_cancel">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string>取消</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
+         <item row="7" column="0">
+          <widget class="QLabel" name="label_8">
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="autoFillBackground">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>测量性质</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1" colspan="3">
+          <widget class="QComboBox" name="comboBox_projectType">
+           <property name="editable">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="1" colspan="3">
+          <widget class="QComboBox" name="comboBox_surveyType">
+           <property name="editable">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="label_6">
+           <property name="text">
+            <string>测量投影</string>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="0">
+          <widget class="QLabel" name="label_13">
+           <property name="text">
+            <string>测量起止时间</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1" colspan="3">
+          <widget class="QComboBox" name="comboBox_surveyTeam">
+           <property name="editable">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="1">
+          <widget class="QDateEdit" name="dateEdit_surveyStart">
+           <property name="displayFormat">
+            <string>yyyy-MM-dd</string>
+           </property>
+           <property name="calendarPopup">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="2">
+          <widget class="QLabel" name="label_14">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>-</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1" colspan="3">
+          <widget class="QComboBox" name="comboBox_projectName">
+           <property name="editable">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1" colspan="3">
+          <widget class="QComboBox" name="comboBox_projectID">
+           <property name="editable">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>项目名称</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>项目类型</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>项目工程师</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="label_5">
+           <property name="text">
+            <string>测量队伍</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="1" colspan="3">
+          <widget class="QComboBox" name="comboBox_surveyPrj">
+           <property name="editable">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>项目编号</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1" colspan="3">
+          <widget class="QComboBox" name="comboBox_projectEngineer">
+           <property name="editable">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="0">
+          <widget class="QLabel" name="label_7">
+           <property name="text">
+            <string>测量坐标系</string>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="3">
+          <widget class="QDateEdit" name="dateEdit_surveyEnd">
+           <property name="readOnly">
+            <bool>false</bool>
+           </property>
+           <property name="displayFormat">
+            <string>yyyy-MM-dd</string>
+           </property>
+           <property name="calendarPopup">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="9" column="0">
+          <widget class="QLabel" name="label_15">
+           <property name="text">
+            <string>制图起止时间</string>
+           </property>
+          </widget>
+         </item>
+         <item row="9" column="1">
+          <widget class="QDateEdit" name="dateEdit_chartStart">
+           <property name="displayFormat">
+            <string>yyyy-MM-dd</string>
+           </property>
+           <property name="calendarPopup">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="9" column="3">
+          <widget class="QDateEdit" name="dateEdit_chartEnd">
+           <property name="displayFormat">
+            <string>yyyy-MM-dd</string>
+           </property>
+           <property name="calendarPopup">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="9" column="2">
+          <widget class="QLabel" name="label_16">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>-</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
-       <item>
-        <spacer name="horizontalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
+       <item row="1" column="2">
+        <widget class="QPushButton" name="pushButton_cancel">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
+         <property name="text">
+          <string>取消</string>
          </property>
-        </spacer>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QPushButton" name="pushButton_delete">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>删除</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
      <widget class="QWidget" name="tab_2">
-      <property name="autoFillBackground">
-       <bool>true</bool>
-      </property>
       <attribute name="title">
        <string>矢量数据</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout">
-       <item row="1" column="1">
-        <widget class="QPushButton" name="pushButton_newDatabase">
-         <property name="text">
-          <string>新建数据库</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
+       <item row="3" column="1">
         <widget class="QPushButton" name="pushButton_importDatabase">
          <property name="text">
           <string>导入数据库</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="2">
+       <item row="2" column="2">
         <spacer name="horizontalSpacer">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -265,33 +295,14 @@
          </property>
         </spacer>
        </item>
-       <item row="3" column="1">
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
+       <item row="2" column="1">
+        <widget class="QPushButton" name="pushButton_newDatabase">
+         <property name="text">
+          <string>新建数据库</string>
          </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
+        </widget>
        </item>
-       <item row="2" column="0">
-        <spacer name="horizontalSpacer_4">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="0" column="1">
+       <item row="0" column="1" rowspan="2">
         <spacer name="verticalSpacer_2">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -304,12 +315,42 @@
          </property>
         </spacer>
        </item>
+       <item row="4" column="1">
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_12">
+         <property name="text">
+          <string>矢量数据列表：</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" rowspan="4">
+        <widget class="QListWidget" name="listWidget_vector">
+         <property name="focusPolicy">
+          <enum>Qt::WheelFocus</enum>
+         </property>
+         <property name="selectionMode">
+          <enum>QAbstractItemView::ExtendedSelection</enum>
+         </property>
+         <property name="selectionBehavior">
+          <enum>QAbstractItemView::SelectRows</enum>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="tab_3">
-      <property name="autoFillBackground">
-       <bool>true</bool>
-      </property>
       <attribute name="title">
        <string>栅格数据</string>
       </attribute>
@@ -348,9 +389,6 @@
       </layout>
      </widget>
      <widget class="QWidget" name="tab_4">
-      <property name="autoFillBackground">
-       <bool>true</bool>
-      </property>
       <attribute name="title">
        <string>测量文件</string>
       </attribute>
@@ -380,7 +418,7 @@
         </widget>
        </item>
        <item row="2" column="2">
-        <widget class="QPushButton" name="pushButton_savesurveyMD">
+        <widget class="QPushButton" name="pushButton_saveSurveyMD">
          <property name="text">
           <string>保存元数据</string>
          </property>
@@ -389,9 +427,6 @@
       </layout>
      </widget>
      <widget class="QWidget" name="tab_5">
-      <property name="autoFillBackground">
-       <bool>true</bool>
-      </property>
       <attribute name="title">
        <string>档案文件</string>
       </attribute>
@@ -435,7 +470,6 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <tabstops>
-  <tabstop>tabWidget_survey</tabstop>
   <tabstop>comboBox_projectID</tabstop>
   <tabstop>comboBox_projectName</tabstop>
   <tabstop>comboBox_projectType</tabstop>
@@ -455,7 +489,7 @@
   <tabstop>tableView_raster</tabstop>
   <tabstop>pushButton_importSurvey</tabstop>
   <tabstop>pushButton_updateSurveyMD</tabstop>
-  <tabstop>pushButton_savesurveyMD</tabstop>
+  <tabstop>pushButton_saveSurveyMD</tabstop>
   <tabstop>tableView_survey</tabstop>
   <tabstop>pushButton_importArchive</tabstop>
   <tabstop>pushButton_updateArchiveMD</tabstop>

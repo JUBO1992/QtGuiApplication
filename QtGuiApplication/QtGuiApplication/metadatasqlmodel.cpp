@@ -32,8 +32,17 @@ int MetadataSqlModel::columnCount(const QModelIndex &parent /*= QModelIndex()*/)
 	return m_extraHead.size() + record().count();
 }
 
+int MetadataSqlModel::rowCount(const QModelIndex &parent /* = QModelIndex() */) const
+{
+	return QSqlTableModel::rowCount(parent);
+}
+
 QVariant MetadataSqlModel::headerData(int section, Qt::Orientation orientation, int role /*= Qt::DisplayRole*/) const
 {
+	if (role != Qt::DisplayRole)
+	{
+		return QVariant();
+	}
 	if (orientation == Qt::Vertical)
 	{
 		return section + 1;
@@ -124,7 +133,7 @@ QVariant MetadataSqlModel::data(const QModelIndex &index, int role /*= Qt::Displ
 			}
 			else if (field_string == m_extraHead.last())
 			{
-				return (curfile._isOpen) ? QString("√") : QString();
+				return (curfile._isOpen) ? QString("√") : QString("×");
 			}
 		}
 		else
@@ -152,7 +161,7 @@ QVariant MetadataSqlModel::data(const QModelIndex &index, int role /*= Qt::Displ
 		//	}
 		//	else if (field_string == m_extraHead.last())
 		//	{
-		//		return (curfile._isOpen) ? QString("√") : QString();
+		//		return (curfile._isOpen) ? QString("√") : QString("×");
 		//	}
 		//}
 		//else
@@ -230,7 +239,7 @@ void MetadataSqlModel::setTable(const QString &tableName)
 
 void MetadataSqlModel::setNoEditFields(const QStringList& strlist)
 {
-	m_noEditFields = strlist;
+	m_noEditFields << strlist;
 }
 
 QStringList MetadataSqlModel::getFileNOList(const QModelIndexList& list)

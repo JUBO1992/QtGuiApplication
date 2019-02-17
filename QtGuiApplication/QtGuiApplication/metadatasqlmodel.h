@@ -16,6 +16,7 @@ public:
 	~MetadataSqlModel();
 
 	int columnCount(const QModelIndex &parent = QModelIndex()) const override;
+	int rowCount(const QModelIndex &parent /* = QModelIndex() */) const override;
 	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 	bool setHeaderData(int section, Qt::Orientation orientation, const QVariant &value, int role /* = Qt::EditRole */) override;
 	Qt::ItemFlags flags(const QModelIndex& index) const override;
@@ -55,7 +56,7 @@ private:
 
 	int m_fileNOCol;			//fileNO所在列索引
 
-	bool m_editFlag;			//
+	bool m_editFlag;			//标记父类调用还是手动调用
 };
 
 #endif // METADATASQLMODEL_H

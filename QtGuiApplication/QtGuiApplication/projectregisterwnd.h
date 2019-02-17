@@ -29,7 +29,10 @@ private:
 	bool initSurveyModel(bool isSQL = false);
 	bool initArchiveModel(bool isSQL = false);
 
+	void showEvent(QShowEvent *);
 	void closeEvent(QCloseEvent *);
+
+	void updateListWidget();
 
 private slots:
 	void on_pushButton_saveProject_clicked();
@@ -40,6 +43,7 @@ private slots:
 
 	void on_pushButton_newDatabase_clicked();
 	void on_pushButton_importDatabase_clicked();
+	void on_listWidget_vector_clicked(QModelIndex idx);
 
 	void on_pushButton_importRaster_clicked();
 	void on_pushButton_updateRasterMD_clicked();
@@ -58,6 +62,8 @@ private slots:
 
 	void clicked_rightMenu(const QPoint &pos);
 	void clicked_deleteAction();
+	void clicked_addAction();
+	void clicked_openDirAction();
 
 private:
 	Ui::ProjectRegisterWnd ui;
@@ -77,6 +83,8 @@ private:
 
 	QMenu *m_pRightMenu;
 	QAction *m_pDeleteAction;
+	QAction *m_pAddAction;
+	QAction *m_pOpenDirAction;
 
 };
 

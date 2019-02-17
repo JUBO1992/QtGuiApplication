@@ -40,7 +40,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="tab">
        <property name="autoFillBackground">
@@ -532,6 +532,11 @@
         <string>影像归档检查</string>
        </attribute>
       </widget>
+      <widget class="CompressWnd" name="tab_4">
+       <attribute name="title">
+        <string>压缩工具</string>
+       </attribute>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -573,6 +578,12 @@
    <class>ArchiveCheckWnd</class>
    <extends>QWidget</extends>
    <header location="global">archivecheckwnd.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CompressWnd</class>
+   <extends>QWidget</extends>
+   <header location="global">compresswnd.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

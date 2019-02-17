@@ -15,8 +15,8 @@
 
 using namespace std;
 
-
 CommonOperate * g_COperate = NULL;
+QString g_curOpenPrjID = QString();
 
 test_prj::test_prj(QWidget *parent)
 	: QMainWindow(parent)

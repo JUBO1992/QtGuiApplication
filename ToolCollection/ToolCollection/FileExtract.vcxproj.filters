@@ -119,6 +119,15 @@
     <ClCompile Include="GeneratedFiles\Release\moc_checkitemwnd.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="compresswnd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_compresswnd.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_compresswnd.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="fileextract.h">
@@ -160,6 +169,12 @@
     <CustomBuild Include="checkitemwnd.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="compresswnd.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="compresswnd.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_fileextract.h">
@@ -181,6 +196,9 @@
       <Filter>Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_checkitemwnd.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_compresswnd.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
