@@ -12,6 +12,8 @@
 #include "projectopenwnd.h"
 #include "projectregisterwnd.h"
 #include <thread>
+#include "projcsstr.h"
+#include <QFileDialog>
 
 using namespace std;
 
@@ -209,7 +211,16 @@ void test_prj::on_pushButton_MsgWin_clicked()
 
 void test_prj::on_pushButton_TestBtn_clicked()
 {
-	runThread();
+
+	QString path = QFileDialog::getOpenFileName(NULL, "Open File", "", "prj file(*.prj)");
+	QFile file(path);
+	if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+	{
+		QString str = file.readAll();
+		ProjcsStr projObj(str);
+	}
+
+	//runThread();
 
 	////通过函数指针创建线程
 	//std::thread t1(counter, 1, 6);
