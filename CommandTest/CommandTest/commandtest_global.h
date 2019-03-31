@@ -1,0 +1,12 @@
+﻿#ifndef COMMANDTEST_GLOBAL_H
+#define COMMANDTEST_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#ifdef COMMANDTEST_LIB
+# define COMMANDTEST_EXPORT Q_DECL_EXPORT
+#else
+# define COMMANDTEST_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // COMMANDTEST_GLOBAL_H

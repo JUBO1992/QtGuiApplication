@@ -9,6 +9,16 @@
 #include "notepadwindow.h"
 #include "drawwindow.h"
 #include "spindelegate.h"
+#include <functional>
+
+typedef void(*pVoidFunc)();//定义无返回值无参函数指针
+
+struct CustomCmd
+{
+	QString _name;	//命令名称
+	void* _func;	//命令函数
+	QString _msg;	//命令说明
+};
 
 class test_prj : public QMainWindow
 {
@@ -32,9 +42,12 @@ public slots:
 	void hideOrShowTabWidget();
 	void on_pushButton_marineOpen_clicked();
 	void on_pushButton_marineRegister_clicked();
+	void on_pushButton_RegCmd_clicked();
 
 private:
 	void initMenuBtn();
+	void addCommand();
+	void addCommand(const QString& name, const void* func, const QString& msg, QMap<QString, CustomCmd>& cmdList);
 
 private:
 	Ui::test_prjClass ui;
@@ -46,6 +59,8 @@ private:
 	QTableView *_table_view2;
 	QStandardItemModel *_model;
 	SpinDelegate *_spin_delegate;
+
+	QMap<QString, CustomCmd> _cmd_list;//命令列表
 };
 
 #endif // TEST_PRJ_H

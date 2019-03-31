@@ -206,6 +206,9 @@
     <ClCompile Include="marineprjfunc.cpp">
       <Filter>MarineSurvey</Filter>
     </ClCompile>
+    <ClCompile Include="commandfunc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="qtguiapplication.h">
@@ -329,6 +332,9 @@
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_filenamesetwnd.h">
       <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commandfunc.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -14,6 +14,9 @@
 #include <thread>
 #include "projcsstr.h"
 #include <QFileDialog>
+#include "commandfunc.h"
+
+#pragma execution_character_set("utf-8")
 
 using namespace std;
 
@@ -71,6 +74,8 @@ test_prj::test_prj(QWidget *parent)
 	initMenuBtn();
 
 	connect(ui.tabWidget_Main, SIGNAL(tabBarDoubleClicked(int)), this, SLOT(hideOrShowTabWidget()));
+
+	addCommand();
 }
 
 test_prj::~test_prj()
@@ -117,6 +122,24 @@ void test_prj::initMenuBtn()
 	menu->addAction(actionExit);
 	connect(actionExit, SIGNAL(triggered()), this, SLOT(close()));
 
+}
+
+void test_prj::addCommand()
+{
+	addCommand("test1", test_func1, "test1", _cmd_list);
+	addCommand("test2", test_func2, "test2", _cmd_list);
+	addCommand("test3", test_func3, "test3", _cmd_list);
+	addCommand("test4", test_func4, "test4", _cmd_list);
+	addCommand("test5", test_func5, "test5", _cmd_list);
+}
+
+void test_prj::addCommand(const QString& name, const void* func, const QString& msg, QMap<QString, CustomCmd>& cmdList)
+{
+	CustomCmd cmd;
+	cmd._name = name;
+	cmd._func = const_cast<void*>(func);
+	cmd._msg = msg;
+	cmdList.insert(name, cmd);
 }
 
 void test_prj::mouseMoveEvent(QMouseEvent *e)
@@ -212,6 +235,23 @@ void test_prj::on_pushButton_MsgWin_clicked()
 void test_prj::on_pushButton_TestBtn_clicked()
 {
 
+	QString cmd = ui.lineEdit_cmd->text();
+	g_COperate->MsgPrint(cmd);
+	auto it = _cmd_list.find(cmd);
+	if (it != _cmd_list.end())
+	{
+		//void(*func)();
+		//func = (void(*)())it->_func;
+		//func();
+		pVoidFunc func = (pVoidFunc)it->_func;
+		func();
+	}
+	else
+	{
+		g_COperate->MsgPrint("There is no such cmd!");
+	}
+	return;
+
 	QString path = QFileDialog::getOpenFileName(NULL, "Open File", "", "prj file(*.prj)");
 	QFile file(path);
 	if (file.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -262,4 +302,52 @@ void test_prj::on_pushButton_marineRegister_clicked()
 	ProjectRegisterWnd registerWnd(this);
 	registerWnd.exec();
 
+}
+
+#include <QLibrary>
+typedef void(*pCmdRegister)(QStringList & arrNames, QList<void*> & arrFun, QStringList& explainList);
+QMap<QString, QLibrary> g_libs;//记录加载的插件，key为插件全路径，value为插件对象
+
+void test_prj::on_pushButton_RegCmd_clicked()
+{
+	//打开自定义pin后缀的dll文件进行命令注册
+	QString dllpath = QFileDialog::getOpenFileName(NULL, "Open File", "", "pin file(*.pin)");
+	if (g_libs.contains(dllpath))
+	{
+		g_COperate->MsgPrint("插件已加载！");
+		return;
+	}
+	QLibrary mylib(dllpath);
+	if (!mylib.load())
+	{
+		g_COperate->MsgPrint("插件加载失败！");
+		return;
+	}
+	pCmdRegister regFunc = (pCmdRegister)mylib.resolve("CmdRegister");
+	if (!regFunc)
+	{
+		g_COperate->MsgPrint("插件格式不匹配！");
+		return;
+	}
+	QStringList arrNames;
+	QList<void*> arrFun;
+	QStringList explainList;
+	regFunc(arrNames, arrFun, explainList);
+	for (int i = 0; i < arrNames.size(); ++i)
+	{
+		CustomCmd cmd;
+		cmd._name = arrNames[i];
+		cmd._func = arrFun[i];
+		cmd._msg = explainList[i];
+		if (_cmd_list.contains(cmd._name))
+		{
+			g_COperate->MsgPrint(QString("%1命令已注册！").arg(cmd._name));
+			continue;
+		}
+		else
+		{
+			g_COperate->MsgPrint(QString("%1命令注册成功！").arg(cmd._name));
+			_cmd_list.insert(cmd._name, cmd);
+		}
+	}
 }

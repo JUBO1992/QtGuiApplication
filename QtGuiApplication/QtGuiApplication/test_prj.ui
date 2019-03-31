@@ -328,6 +328,25 @@
          </property>
         </widget>
        </item>
+       <item row="2" column="2">
+        <widget class="QPushButton" name="pushButton_RegCmd">
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>36</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>150</width>
+           <height>36</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>加载插件</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
     </item>
@@ -357,6 +376,9 @@
     <layout class="QGridLayout" name="gridLayout_2">
      <item row="0" column="0">
       <widget class="QTextBrowser" name="textBrowser"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLineEdit" name="lineEdit_cmd"/>
      </item>
     </layout>
    </widget>
