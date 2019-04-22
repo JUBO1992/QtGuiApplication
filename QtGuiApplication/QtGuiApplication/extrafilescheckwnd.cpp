@@ -1,4 +1,4 @@
-﻿#include "extrafilescheckwnd.h"s
+﻿#include "extrafilescheckwnd.h"
 #include "marineproject.h"
 #include <QListWidgetItem>
 #include <QMenu>

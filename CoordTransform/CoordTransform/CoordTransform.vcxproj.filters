@@ -28,22 +28,22 @@
     <ClCompile Include="coordtransform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mscoordprojdef.cpp">
+    <ClCompile Include="ct_coordprojdef.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mscoordsystemstr.cpp">
+    <ClCompile Include="ct_coordtrans.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mscoordtrans.cpp">
+    <ClCompile Include="cs_coordsystemstr.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="coordsystemstr.cpp">
+    <ClCompile Include="cs_geogcsstr.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="geogcsstr.cpp">
+    <ClCompile Include="cs_projcsstr.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="projcsstr.cpp">
+    <ClCompile Include="cs_projparams.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -54,25 +54,25 @@
     <ClInclude Include="coordtransform_global.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mscoordprojdef.h">
+    <ClInclude Include="ct_coordprojdef.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mscoordstruct.h">
+    <ClInclude Include="coordstruct.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mscoordsystemstr.h">
+    <ClInclude Include="ct_coordtrans.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mscoordtrans.h">
+    <ClInclude Include="cs_coordsystemstr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="coordsystemstr.h">
+    <ClInclude Include="cs_geogcsstr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="geogcsstr.h">
+    <ClInclude Include="cs_projcsstr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="projcsstr.h">
+    <ClInclude Include="cs_projparams.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

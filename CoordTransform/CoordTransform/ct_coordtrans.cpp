@@ -1,4 +1,4 @@
-﻿#include "mscoordtrans.h"
+﻿#include "ct_coordtrans.h"
 
 #pragma execution_character_set("utf-8")
 
@@ -30,6 +30,16 @@ GeocsProjcsTrans::~GeocsProjcsTrans()
 	{
 		pj_free(_geopj);
 	}
+}
+
+bool GeocsProjcsTrans::forwardCoordTrans(double ix, double iy, double& ox, double& oy) const
+{
+	return geocs2projcs_1(ix, iy, ox, oy);
+}
+
+bool GeocsProjcsTrans::inverseCoordTrans(double ix, double iy, double& ox, double& oy) const
+{
+	return projcs2geocs_1(ix, iy, ox, oy);
 }
 
 bool GeocsProjcsTrans::geocs2projcs_1(double lon, double lat, double&x, double&y) const
@@ -141,6 +151,16 @@ ProjcsProjcsTrans::~ProjcsProjcsTrans()
 
 }
 
+bool ProjcsProjcsTrans::forwardCoordTrans(double ix, double iy, double& ox, double& oy) const
+{
+	return transform_1(ix, iy, ox, oy);
+}
+
+bool ProjcsProjcsTrans::inverseCoordTrans(double ix, double iy, double& ox, double& oy) const
+{
+	return inverse_1(ix, iy, ox, oy);
+}
+
 bool ProjcsProjcsTrans::transform_1(double ix, double iy, double& ox, double& oy) const
 {
 	ox = oy = 0.0;
@@ -165,6 +185,31 @@ bool ProjcsProjcsTrans::transform_1(double ix, double iy, double& ox, double& oy
 	return true;
 }
 
+bool ProjcsProjcsTrans::inverse_1(double ix, double iy, double& ox, double& oy) const
+{
+	ox = oy = 0.0;
+	if (_srcpj == NULL || _dstpj == NULL)
+	{
+		return false;
+	}
+
+	projUV in_XY;
+	in_XY.u = ix;
+	in_XY.v = iy;
+
+	projUV temp_BL;
+	temp_BL = pj_inv(in_XY, _dstpj);	//投影逆变换(投影坐标转经纬度坐标) 
+	//double tempL = temp_BL.u*RAD_TO_DEG;//弧段转度
+	//double tempB = temp_BL.v*RAD_TO_DEG;//弧段转度
+
+	projUV out_XY;
+	out_XY = pj_fwd(temp_BL, _srcpj);	//投影正变换(经纬度坐标转投影坐标) 
+	ox = out_XY.u;
+	oy = out_XY.v;
+	return true;
+
+}
+
 bool ProjcsProjcsTrans::transform_2(double ix, double iy, double& ox, double& oy) const
 {
 	ox = oy = 0.0;
@@ -177,6 +222,23 @@ bool ProjcsProjcsTrans::transform_2(double ix, double iy, double& ox, double& oy
 	in_XY.v = iy;
 
 	pj_transform(_srcpj, _dstpj, 1, 1, &ix, &iy, NULL);
+	ox = ix;
+	oy = iy;
+	return true;
+}
+
+bool ProjcsProjcsTrans::inverse_2(double ix, double iy, double& ox, double& oy) const
+{
+	ox = oy = 0.0;
+	if (_srcpj == NULL || _dstpj == NULL)
+	{
+		return false;
+	}
+	projUV in_XY;
+	in_XY.u = ix;
+	in_XY.v = iy;
+
+	pj_transform(_dstpj, _srcpj, 1, 1, &ix, &iy, NULL);
 	ox = ix;
 	oy = iy;
 	return true;

@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QTextBrowser>
+#include <mutex>
 
 class CommonOperate : public QObject
 {
@@ -21,6 +22,8 @@ public:
 private:
 	QMainWindow * m_mainWindow;//主窗体
 	QTextBrowser * m_textBrowser;//显示文本控件
+
+	std::mutex m_mutex;
 };
 
 #endif // COMMONOPERATE_H

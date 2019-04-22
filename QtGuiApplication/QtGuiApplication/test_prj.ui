@@ -64,208 +64,7 @@
     <item row="2" column="0" colspan="2">
      <widget class="QWidget" name="widget_Mid" native="true">
       <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="2">
-        <widget class="QPushButton" name="pushButton_FileExtract">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>100</width>
-           <height>36</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>150</width>
-           <height>36</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>文件提取工具</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="3">
-        <widget class="QPushButton" name="viewDelegate">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>100</width>
-           <height>36</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>150</width>
-           <height>36</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>ViewDelegate</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="3">
-        <widget class="QPushButton" name="drawWidget">
-         <property name="minimumSize">
-          <size>
-           <width>100</width>
-           <height>36</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>150</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>Draw Widget</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0" rowspan="7">
-        <widget class="QLabel" name="imgLabel">
-         <property name="autoFillBackground">
-          <bool>true</bool>
-         </property>
-         <property name="text">
-          <string>This is imgLabel</string>
-         </property>
-         <property name="scaledContents">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="3">
-        <widget class="QPushButton" name="pushButton">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>100</width>
-           <height>36</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>150</width>
-           <height>36</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>PushButton</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="3">
-        <widget class="QPushButton" name="pushButton_MsgWin">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>100</width>
-           <height>36</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>150</width>
-           <height>36</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>信息窗口测试</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="3">
-        <widget class="QPushButton" name="pushButton_TestBtn">
-         <property name="minimumSize">
-          <size>
-           <width>100</width>
-           <height>36</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>150</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>测试按钮</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="3">
-        <widget class="QPushButton" name="notepad">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>100</width>
-           <height>36</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>150</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>Notepad</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="2">
-        <widget class="QPushButton" name="pushButton_LanTool">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>100</width>
-           <height>36</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>150</width>
-           <height>36</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>辅助翻译工具</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="3">
+       <item row="2" column="4">
         <widget class="QPushButton" name="qTable">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
@@ -290,8 +89,8 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="1">
-        <widget class="QPushButton" name="pushButton_marineOpen">
+       <item row="2" column="3">
+        <widget class="QPushButton" name="pushButton_RegCmd">
          <property name="minimumSize">
           <size>
            <width>100</width>
@@ -305,11 +104,212 @@
           </size>
          </property>
          <property name="text">
-          <string>项目打开</string>
+          <string>加载插件</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0" rowspan="7">
+        <widget class="QLabel" name="imgLabel">
+         <property name="autoFillBackground">
+          <bool>true</bool>
+         </property>
+         <property name="text">
+          <string>This is imgLabel</string>
+         </property>
+         <property name="scaledContents">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="4">
+        <widget class="QPushButton" name="drawWidget">
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>36</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>150</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Draw Widget</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="4">
+        <widget class="QPushButton" name="viewDelegate">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>36</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>150</width>
+           <height>36</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>ViewDelegate</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="4">
+        <widget class="QPushButton" name="pushButton">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>36</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>150</width>
+           <height>36</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>PushButton</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="4">
+        <widget class="QPushButton" name="pushButton_TestBtn">
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>36</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>150</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>测试按钮</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="4">
+        <widget class="QPushButton" name="notepad">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>36</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>150</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Notepad</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="4">
+        <widget class="QPushButton" name="pushButton_MsgWin">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>36</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>150</width>
+           <height>36</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>信息窗口测试</string>
          </property>
         </widget>
        </item>
        <item row="0" column="1">
+        <widget class="QPushButton" name="pushButton_FileExtract">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>36</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>150</width>
+           <height>36</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>文件提取工具</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QPushButton" name="pushButton_LanTool">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>36</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>150</width>
+           <height>36</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>辅助翻译工具</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="3">
         <widget class="QPushButton" name="pushButton_marineRegister">
          <property name="minimumSize">
           <size>
@@ -328,8 +328,8 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="2">
-        <widget class="QPushButton" name="pushButton_RegCmd">
+       <item row="1" column="3">
+        <widget class="QPushButton" name="pushButton_marineOpen">
          <property name="minimumSize">
           <size>
            <width>100</width>
@@ -343,7 +343,20 @@
           </size>
          </property>
          <property name="text">
-          <string>加载插件</string>
+          <string>项目打开</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="3">
+        <widget class="QPushButton" name="pushButton_Progress">
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>36</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>进度条测试</string>
          </property>
         </widget>
        </item>
@@ -378,7 +391,11 @@
       <widget class="QTextBrowser" name="textBrowser"/>
      </item>
      <item row="1" column="0">
-      <widget class="QLineEdit" name="lineEdit_cmd"/>
+      <widget class="QComboBox" name="comboBox_Cmd">
+       <property name="editable">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
@@ -409,8 +426,8 @@
    <slot>on_pushbutton_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>355</x>
-     <y>174</y>
+     <x>937</x>
+     <y>211</y>
     </hint>
     <hint type="destinationlabel">
      <x>299</x>
@@ -457,8 +474,8 @@
    <slot>on_drawwidget_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>258</x>
-     <y>286</y>
+     <x>937</x>
+     <y>387</y>
     </hint>
     <hint type="destinationlabel">
      <x>212</x>
@@ -473,8 +490,8 @@
    <slot>on_notepad_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>96</x>
-     <y>286</y>
+     <x>884</x>
+     <y>343</y>
     </hint>
     <hint type="destinationlabel">
      <x>212</x>
@@ -505,8 +522,8 @@
    <slot>on_qtable_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>139</x>
-     <y>275</y>
+     <x>927</x>
+     <y>299</y>
     </hint>
     <hint type="destinationlabel">
      <x>182</x>
@@ -521,8 +538,8 @@
    <slot>on_viewdelegate_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>304</x>
-     <y>275</y>
+     <x>937</x>
+     <y>255</y>
     </hint>
     <hint type="destinationlabel">
      <x>182</x>
@@ -537,8 +554,8 @@
    <slot>on_listview_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>338</x>
-     <y>194</y>
+     <x>625</x>
+     <y>211</y>
     </hint>
     <hint type="destinationlabel">
      <x>353</x>
@@ -553,8 +570,8 @@
    <slot>on_searchlist_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>323</x>
-     <y>228</y>
+     <x>625</x>
+     <y>255</y>
     </hint>
     <hint type="destinationlabel">
      <x>360</x>

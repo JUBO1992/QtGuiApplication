@@ -4,7 +4,6 @@
 //!坐标类型
 enum CoordType
 {
-	CTUndef,//未定义
 	Plane,	//平面(x,y)
 	Space,	//空间(x,y,z)
 	Geocs,	//地理(L,B,H)
@@ -14,7 +13,7 @@ enum CoordType
 //!基准面类型
 enum DatumType
 {
-	DTUndef,//未定义
+	DTUndef,
 	WGS84,
 	CGCS2000,
 	Xian80,
@@ -66,6 +65,8 @@ struct MSEllipsoid
 			_df = 298.3;
 			break;
 		default:
+			_a = 6378137.0;
+			_df = 298.257222101;
 			break;
 		}
 		_calcParams();
@@ -81,47 +82,28 @@ private:
 	}
 };
 
-//struct QPointF
-//{
-//	double x;
-//	double y;
-//
-//	QPointF() :x(0), y(0){}
-//	QPointF(double _x, double _y) :x(_x), y(_y){}
-//	QPointF(QPointF& pt){ x = pt.x; y = pt.y; }
-//};
-
-struct QPoint3D
-{
-	double x;
-	double y;
-	double z;
-
-	QPoint3D() :x(0), y(0), z(0){}
-	QPoint3D(double _x, double _y, double _z) :x(_x), y(_y), z(_z){}
-	QPoint3D(QPoint3D& pt){ x = pt.x; y = pt.y; z = pt.z; }
-};
+//下面参数的意义需要再斟酌！！！！！！！！！！！！！！！！！！！！！！
 
 //!平面四参数结构体
 struct FourParams
 {
-	double _x;		//平移参数x东
-	double _y;		//平移参数y北
-	double _s;		//缩放参数，单位为1
-	double _theta;	//旋转参数，逆时针为正，单位弧度
+	double _x;		//x平移
+	double _y;		//y平移
+	double _s;		//缩放因子
+	double _theta;	//旋转角-十进制秒
 	FourParams() :_x(0), _y(0), _s(1), _theta(0){}
 };
 
 //!三维七参数结构体
 struct SevenParams
 {
-	double _x;		//平移参数x
-	double _y;		//平移参数y
-	double _z;		//平移参数z
-	double _rx;		//旋转参数，绕x轴，逆时针为正，单位弧度
-	double _ry;		//旋转参数，绕y轴，逆时针为正，单位弧度
-	double _rz;		//旋转参数，绕z轴，逆时针为正，单位弧度
-	double _s;		//缩放参数，单位ppm，真是缩放因子为：1+s*1e-6
+	double _x;
+	double _y;
+	double _z;
+	double _rx;		//arc seconds
+	double _ry;		//arc seconds
+	double _rz;		//arc seconds
+	double _s;		//ppm 1+s*1e-6
 	SevenParams() :_x(0), _y(0), _z(0), _rx(0), _ry(0), _rz(0), _s(0){}
 };
 

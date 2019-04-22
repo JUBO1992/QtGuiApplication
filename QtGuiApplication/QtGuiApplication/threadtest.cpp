@@ -3,6 +3,7 @@
 #include <thread>
 #include <functional>
 #include "commonoperate.h"
+#include "progressbase.h"
 
 extern CommonOperate* g_COperate;
 
@@ -60,8 +61,12 @@ void Counter::operator()() const
 
 void counter(int id, int numIter)
 {
+	ProgressTracker progress("Ω¯∂»Ãı≤‚ ‘");
+	progress.CreateProgress();
 	for (int i = 0; i < numIter; ++i)
 	{
+		progress.SetProgressValue(i, numIter);
 		g_COperate->MsgPrint(QString("Counter %1 has value %2").arg(id).arg(i));
 	}
+	progress.CloseProgress();
 }

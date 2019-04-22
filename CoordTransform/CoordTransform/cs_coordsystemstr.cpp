@@ -1,4 +1,4 @@
-﻿#include "coordsystemstr.h"
+﻿#include "cs_coordsystemstr.h"
 #pragma execution_character_set("utf-8")
 
 CoordSystemStr::CoordSystemStr()
@@ -119,4 +119,30 @@ QString parseCSPObj2QStr(const CSParamObject* obj)
 		str = QString("%1[\"%2\"%3]").arg(obj->_mark).arg(obj->_name).arg(childrenStr);
 	}
 	return str;
+}
+
+CSParamObject* findCSPObjByMark(const CSParamObject* obj, const QString & mark)
+{
+	if (obj == NULL) return NULL;
+	CSParamObject* pCsObj = const_cast<CSParamObject*>(obj);
+	if (obj->_mark.toUpper() == mark.toUpper())
+		return pCsObj;
+	
+	if (obj->_children.isEmpty())//说明是叶子节点
+	{
+		return NULL;//没有找到
+	}
+	else//说明存在子节点
+	{
+		for (int i = 0; i < obj->_children.size(); ++i)
+		{
+			CSParamObject* pCurObj = obj->_children[i];
+			CSParamObject* pTmpObj = findCSPObjByMark(pCurObj, mark);
+			if (pTmpObj != NULL)
+			{
+				return pTmpObj;
+			}
+		}
+	}
+	return NULL;
 }

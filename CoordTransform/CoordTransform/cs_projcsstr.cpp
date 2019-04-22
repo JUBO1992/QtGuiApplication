@@ -1,28 +1,28 @@
-﻿#include "projcsstr.h"
+﻿#include "cs_projcsstr.h"
+
+ProjcsStr::ProjcsStr()
+{
+
+}
 
 ProjcsStr::ProjcsStr(const QString& qsr)
-:_geogcs(DTUndef)
 {
-	if (_parseProjcsStr(qsr))
-	{
-		_cs_type = PROJCS;
-		_cs_unit = CoordSystemUint(_cs_type);
-	}
+	setCoordSystemStr(qsr);
 }
 
 ProjcsStr::ProjcsStr(const DatumType& type, const QString& name, const ProjectionDef& proj)
-: _geogcs(type)
-, _projcs_name(name)
-, _projection(proj)
+	: _geogcs(type)
+	, _projcs_name(name)
+	, _projection(proj)
 {
 	_cs_type = PROJCS;
 	_cs_unit = CoordSystemUint(_cs_type);
 }
 
 ProjcsStr::ProjcsStr(const GeogcsStr& geogcs, const QString& name, const ProjectionDef& proj)
-: _geogcs(geogcs)
-, _projcs_name(name)
-, _projection(proj)
+	: _geogcs(geogcs)
+	, _projcs_name(name)
+	, _projection(proj)
 {
 	_cs_type = PROJCS;
 	_cs_unit = CoordSystemUint(_cs_type);
@@ -31,6 +31,15 @@ ProjcsStr::ProjcsStr(const GeogcsStr& geogcs, const QString& name, const Project
 ProjcsStr::~ProjcsStr()
 {
 
+}
+
+void ProjcsStr::setCoordSystemStr(const QString& qsr)
+{
+	if (_parseProjcsStr(qsr))
+	{
+		_cs_type = PROJCS;
+		_cs_unit = CoordSystemUint(_cs_type);
+	}
 }
 
 QString ProjcsStr::getCoordSystemStr() const
@@ -77,9 +86,38 @@ bool ProjcsStr::_parseProjcsStr(const QString& qsr)
 	}
 
 	CSParamObject * obj = parseQStr2CSPObj(qsr);
-	QString str = parseCSPObj2QStr(obj);
+
+	CSParamObject* pProjcs = findCSPObjByMark(obj, "PROJCS");
+	if (pProjcs == NULL)return false;
+	_projcs_name = pProjcs->_name;
+
+	CSParamObject* pGeocs = findCSPObjByMark(obj, "GEOGCS");
+	if (pGeocs == NULL)return false;
+	QString geoStr = parseCSPObj2QStr(pGeocs);
+	_geogcs = GeogcsStr(geoStr);
+	if (!_geogcs.isValid()) return false;
+
+	CSParamObject* pProjection = findCSPObjByMark(obj, "PROJECTION");
+	if (pProjection == NULL)return false;
+	_projection._name = pProjection->_name;
+
+	QList<ProjParam> params;//!<参数列表
+	for (int i = 0; i < pProjcs->_children.size(); ++i)
+	{
+		CSParamObject* pCurObj = pProjcs->_children[i];
+		if (pCurObj && pCurObj->_mark.toUpper() == "PARAMETER" && pCurObj->_values.size() == 1)
+		{
+			ProjParam param;
+			param._name = pCurObj->_name;
+			param._value = pCurObj->_values[0].toDouble();
+			params << param;
+		}
+	}
+
+	_projection._params = params;
+
 	delete obj;
 	obj = NULL;
 
-	return false;
+	return true;
 }

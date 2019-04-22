@@ -2,8 +2,8 @@
 #define GEOGCSSTR_H
 #include "coordtransform_global.h"
 #include <QString>
-#include "mscoordstruct.h"
-#include "coordsystemstr.h"
+#include "coordstruct.h"
+#include "cs_coordsystemstr.h"
 
 //!地理坐标系参考椭球
 struct GeoSpheroid
@@ -52,7 +52,7 @@ struct GeoDatum
 			_spheriod = GeoSpheroid();
 			break;
 		case WGS84:
-			_name = "D_WGS_2000";
+			_name = "D_WGS_1984";
 			_spheriod = GeoSpheroid("WGS_1984", 6378137.0, 298.257223563);
 			break;
 		case CGCS2000:
@@ -77,10 +77,13 @@ struct GeoDatum
 class COORDTRANSFORM_EXPORT GeogcsStr :public CoordSystemStr
 {
 public:
+	GeogcsStr();
 	GeogcsStr(const QString& qsr);
 	GeogcsStr(const DatumType& type);
 	GeogcsStr(const QString& name, const GeoDatum& datum);
 	virtual ~GeogcsStr();
+
+	void setCoordSystemStr(const QString& qsr);
 
 	//!获得地理坐标系名称
 	virtual QString getName() const override{ return _geogcs_name; }

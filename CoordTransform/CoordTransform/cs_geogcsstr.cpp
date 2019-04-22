@@ -1,12 +1,13 @@
-﻿#include "geogcsstr.h"
+﻿#include "cs_geogcsstr.h"
+
+GeogcsStr::GeogcsStr()
+{
+
+}
 
 GeogcsStr::GeogcsStr(const QString& qsr)
 {
-	if (_parseGeogcsStr(qsr))
-	{
-		_cs_type = GEOGCS;
-		_cs_unit = CoordSystemUint(_cs_type);
-	}
+	setCoordSystemStr(qsr);
 }
 
 GeogcsStr::GeogcsStr(const DatumType& type)
@@ -54,6 +55,15 @@ GeogcsStr::~GeogcsStr()
 
 }
 
+void GeogcsStr::setCoordSystemStr(const QString& qsr)
+{
+	if (_parseGeogcsStr(qsr))
+	{
+		_cs_type = GEOGCS;
+		_cs_unit = CoordSystemUint(_cs_type);
+	}
+}
+
 QString GeogcsStr::getCoordSystemStr() const
 {
 	return QString("GEOGCS[\"%1\",DATUM[\"%2\",SPHEROID[\"%3\", %4, %5]],PRIMEM[\"%6\", %7],UNIT[\"%8\", %9]]")
@@ -79,6 +89,8 @@ bool GeogcsStr::_parseGeogcsStr(const QString& qsr)
 	{
 		return false;
 	}
+
+	/*
 	int index_begin = 0;
 	int index_end = 0;
 
@@ -111,6 +123,26 @@ bool GeogcsStr::_parseGeogcsStr(const QString& qsr)
 	index_begin = sr.indexOf("GEOGCS", 0, Qt::CaseInsensitive);
 	index_end = sr.indexOf("]", index_begin);
 	geogcsStr = sr.mid(index_begin, index_end - index_begin + 1);
+	*/
 
-	return false;
+	CSParamObject * obj = parseQStr2CSPObj(qsr);
+	if (obj == NULL) return false;
+	CSParamObject* pGeocs = findCSPObjByMark(obj, "GEOGCS");
+	if (pGeocs == NULL)return false;
+	_geogcs_name = pGeocs->_name;
+	CSParamObject* pDatum = findCSPObjByMark(pGeocs, "DATUM");
+	if (pDatum == NULL)return false;
+	_geo_datum._name = pDatum->_name;
+	CSParamObject* pSpheroid = findCSPObjByMark(obj, "SPHEROID");
+	if (pSpheroid == NULL)return false;
+	if (!pSpheroid->_children.isEmpty() || pSpheroid->_values.size() != 2)
+		return false;
+	double a = pSpheroid->_values[0].toDouble();
+	double df = pSpheroid->_values[1].toDouble();
+	GeoSpheroid spheriod = GeoSpheroid(pSpheroid->_name, a, df);
+	_geo_datum._spheriod = spheriod;
+	delete obj;
+	obj = NULL;
+
+	return true;
 }

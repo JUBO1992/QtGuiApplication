@@ -2,7 +2,6 @@
 #define COORDSYSTEMSTR_H
 #include "coordtransform_global.h"
 #include <QStringList>
-#include "mscoordstruct.h"
 
 //!坐标系统类型
 enum CoordSystemType
@@ -96,5 +95,7 @@ protected:
 CSParamObject* parseQStr2CSPObj(const QString& str);
 //!将CSParamObject对象转换为坐标系字符串
 QString parseCSPObj2QStr(const CSParamObject* obj);
+//!通过mark标记（不区分大小写）找到相应的CSParamObject对象（第一个符合条件的对象）
+CSParamObject* findCSPObjByMark(const CSParamObject* obj, const QString & mark);
 
 #endif // COORDSYSTEMSTR_H

@@ -77,24 +77,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="coordsystemstr.cpp" />
     <ClCompile Include="coordtransform.cpp" />
-    <ClCompile Include="geogcsstr.cpp" />
-    <ClCompile Include="mscoordprojdef.cpp" />
-    <ClCompile Include="mscoordsystemstr.cpp" />
-    <ClCompile Include="mscoordtrans.cpp" />
-    <ClCompile Include="projcsstr.cpp" />
+    <ClCompile Include="cs_coordsystemstr.cpp" />
+    <ClCompile Include="cs_geogcsstr.cpp" />
+    <ClCompile Include="cs_projcsstr.cpp" />
+    <ClCompile Include="cs_projparams.cpp" />
+    <ClCompile Include="ct_coordprojdef.cpp" />
+    <ClCompile Include="ct_coordtrans.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="coordsystemstr.h" />
     <ClInclude Include="coordtransform.h" />
     <ClInclude Include="coordtransform_global.h" />
-    <ClInclude Include="geogcsstr.h" />
-    <ClInclude Include="mscoordprojdef.h" />
-    <ClInclude Include="mscoordstruct.h" />
-    <ClInclude Include="mscoordsystemstr.h" />
-    <ClInclude Include="mscoordtrans.h" />
-    <ClInclude Include="projcsstr.h" />
+    <ClInclude Include="cs_coordsystemstr.h" />
+    <ClInclude Include="cs_geogcsstr.h" />
+    <ClInclude Include="cs_projcsstr.h" />
+    <ClInclude Include="cs_projparams.h" />
+    <ClInclude Include="ct_coordprojdef.h" />
+    <ClInclude Include="coordstruct.h" />
+    <ClInclude Include="ct_coordtrans.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

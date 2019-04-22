@@ -10,6 +10,7 @@
 #include "drawwindow.h"
 #include "spindelegate.h"
 #include <functional>
+#include "mybmw.h"
 
 typedef void(*pVoidFunc)();//定义无返回值无参函数指针
 
@@ -43,11 +44,14 @@ public slots:
 	void on_pushButton_marineOpen_clicked();
 	void on_pushButton_marineRegister_clicked();
 	void on_pushButton_RegCmd_clicked();
+	void on_pushButton_Progress_clicked();
+	void on_comboBox_Cmd_currentTextChanged(QString);
 
 private:
 	void initMenuBtn();
 	void addCommand();
 	void addCommand(const QString& name, const void* func, const QString& msg, QMap<QString, CustomCmd>& cmdList);
+	void update_comboBox_Cmd();
 
 private:
 	Ui::test_prjClass ui;
@@ -61,6 +65,9 @@ private:
 	SpinDelegate *_spin_delegate;
 
 	QMap<QString, CustomCmd> _cmd_list;//命令列表
+
+	MyBMW _mybmw;
+	bool _isshow;
 };
 
 #endif // TEST_PRJ_H

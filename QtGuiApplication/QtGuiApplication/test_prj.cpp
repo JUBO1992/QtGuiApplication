@@ -15,6 +15,8 @@
 #include "projcsstr.h"
 #include <QFileDialog>
 #include "commandfunc.h"
+#include "progressbase.h"
+#include "mybmw.h"
 
 #pragma execution_character_set("utf-8")
 
@@ -24,7 +26,9 @@ CommonOperate * g_COperate = NULL;
 QString g_curOpenPrjID = QString();
 
 test_prj::test_prj(QWidget *parent)
-	: QMainWindow(parent)
+: QMainWindow(parent)
+, _mybmw(0)
+, _isshow(false)
 {
 	ui.setupUi(this);
 
@@ -76,6 +80,7 @@ test_prj::test_prj(QWidget *parent)
 	connect(ui.tabWidget_Main, SIGNAL(tabBarDoubleClicked(int)), this, SLOT(hideOrShowTabWidget()));
 
 	addCommand();
+	update_comboBox_Cmd();
 }
 
 test_prj::~test_prj()
@@ -140,6 +145,13 @@ void test_prj::addCommand(const QString& name, const void* func, const QString& 
 	cmd._func = const_cast<void*>(func);
 	cmd._msg = msg;
 	cmdList.insert(name, cmd);
+}
+
+void test_prj::update_comboBox_Cmd()
+{
+	ui.comboBox_Cmd->clear();
+	QStringList list = _cmd_list.keys();
+	ui.comboBox_Cmd->addItems(list);
 }
 
 void test_prj::mouseMoveEvent(QMouseEvent *e)
@@ -232,35 +244,55 @@ void test_prj::on_pushButton_MsgWin_clicked()
 	g_COperate->MsgPrint("THIS is a TEST!");
 }
 
+void testtest(bool* isok=0)
+{
+	if (isok)*isok = false;
+}
+
 void test_prj::on_pushButton_TestBtn_clicked()
 {
 
-	QString cmd = ui.lineEdit_cmd->text();
-	g_COperate->MsgPrint(cmd);
-	auto it = _cmd_list.find(cmd);
-	if (it != _cmd_list.end())
+	bool isok = true;
+	testtest();
+
+	if (_isshow)
 	{
-		//void(*func)();
-		//func = (void(*)())it->_func;
-		//func();
-		pVoidFunc func = (pVoidFunc)it->_func;
-		func();
+		_mybmw.hide();
+		_isshow = false;
 	}
 	else
 	{
-		g_COperate->MsgPrint("There is no such cmd!");
+		_mybmw.show();
+		_isshow = true;
 	}
 	return;
 
-	QString path = QFileDialog::getOpenFileName(NULL, "Open File", "", "prj file(*.prj)");
-	QFile file(path);
-	if (file.open(QIODevice::ReadOnly | QIODevice::Text))
-	{
-		QString str = file.readAll();
-		ProjcsStr projObj(str);
-	}
+	//QString cmd = ui.lineEdit_cmd->text();
+	//g_COperate->MsgPrint(cmd);
+	//auto it = _cmd_list.find(cmd);
+	//if (it != _cmd_list.end())
+	//{
+	//	//void(*func)();
+	//	//func = (void(*)())it->_func;
+	//	//func();
+	//	pVoidFunc func = (pVoidFunc)it->_func;
+	//	func();
+	//}
+	//else
+	//{
+	//	g_COperate->MsgPrint("There is no such cmd!");
+	//}
+	//return;
 
-	//runThread();
+	//QString path = QFileDialog::getOpenFileName(NULL, "Open File", "", "prj file(*.prj)");
+	//QFile file(path);
+	//if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+	//{
+	//	QString str = file.readAll();
+	//	ProjcsStr projObj(str);
+	//}
+
+	runThread2();
 
 	////通过函数指针创建线程
 	//std::thread t1(counter, 1, 6);
@@ -269,18 +301,57 @@ void test_prj::on_pushButton_TestBtn_clicked()
 	//t2.join();
 
 	////通过函数对象创建线程
-	//std::thread t1{ Counter(1, 6) };
-	//std::thread t2((Counter(1, 6)));
+	//std::thread t1{ Counter(1, 1000) };
+	//std::thread t2((Counter(1, 1000)));
+	//for (int i = 0; i < 1000; ++i)
+	//{
+	//	g_COperate->MsgPrint(QString("Counter %1 has value %2").arg(0).arg(i));
+	//}
 	//t1.join();
 	//t2.join();
 
-	//通过lambda表达式创建线程
+	auto MT_Func = [](int id, int count){
+		for (int i = 0; i < count; ++i)
+		{
+			g_COperate->MsgPrint(QString("Counter %1 has value %2").arg(id).arg(i));
+		}
+	};
+
+	////多线程进度条测试
+	//int threadCount = 2*std::thread::hardware_concurrency();
+	//std::thread* threads = new std::thread[threadCount - 1];
+	//for (int i = 0; i < threadCount - 1; ++i)
+	//{
+	//	//threads[i] = std::thread((Counter(i + 1, 500)));
+	//	threads[i] = std::thread(MT_Func, i + 1, 500);
+	//}
+	////Counter(0, 500);
+	////counter(0, 500);
+	//for (int i = 0; i < threadCount - 1; ++i)
+	//{
+	//	threads[i].join();
+	//}
+	//delete[] threads;
+
+	//_mybmw.show();
+	ProgressTracker progress("一般进度条测试");
+	progress.CreateProgress();
+	for (int i = 0; i < 1000; ++i)
+	{
+		progress.SetProgressValue(i, 1000);
+		g_COperate->MsgPrint(QString("Counter %1 has value %2").arg(0).arg(i));
+	}
+	progress.CloseProgress();
+	//_mybmw.hide();
+
+	////通过lambda表达式创建线程
 	//std::thread t1([](int id, int numIter){
 	//	for (int i = 0; i < numIter; ++i)
 	//	{
 	//		g_COperate->MsgPrint(QString("Counter %1 has value %2").arg(id).arg(i));
 	//	}
 	//}, 1, 5);
+	//t1.join();
 }
 
 void test_prj::hideOrShowTabWidget()
@@ -301,7 +372,6 @@ void test_prj::on_pushButton_marineRegister_clicked()
 {
 	ProjectRegisterWnd registerWnd(this);
 	registerWnd.exec();
-
 }
 
 #include <QLibrary>
@@ -350,4 +420,30 @@ void test_prj::on_pushButton_RegCmd_clicked()
 			_cmd_list.insert(cmd._name, cmd);
 		}
 	}
+	update_comboBox_Cmd();
+}
+
+void test_prj::on_pushButton_Progress_clicked()
+{
+	WinExec("ProgressWnd.exe", SW_SHOW);
+}
+
+void test_prj::on_comboBox_Cmd_currentTextChanged(QString)
+{
+	QString cmd = ui.comboBox_Cmd->currentText();
+	g_COperate->MsgPrint(cmd);
+	auto it = _cmd_list.find(cmd);
+	if (it != _cmd_list.end())
+	{
+		//void(*func)();
+		//func = (void(*)())it->_func;
+		//func();
+		pVoidFunc func = (pVoidFunc)it->_func;
+		func();
+	}
+	else
+	{
+		g_COperate->MsgPrint("There is no such cmd!");
+	}
+	return;
 }

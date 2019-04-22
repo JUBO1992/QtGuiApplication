@@ -1,6 +1,8 @@
 #include "commonoperate.h"
 #include <QtWidgets/QApplication>
 
+#pragma execution_character_set("utf-8")
+
 CommonOperate::CommonOperate(QObject *parent, QMainWindow *mainWin, QTextBrowser *txtbrower)
 	: QObject(parent),
 	m_mainWindow(mainWin),
@@ -20,7 +22,7 @@ void CommonOperate::MsgPrint(QString msg)
 	{
 		return;
 	}
-	//如何实现线程安全的输出？？
+	std::lock_guard<std::mutex> lock(m_mutex);
 	m_textBrowser->append(msg);
 	qApp->processEvents();
 }
@@ -31,6 +33,7 @@ void CommonOperate::MsgClear()
 	{
 		return;
 	}
+	std::lock_guard<std::mutex> lock(m_mutex);
 	m_textBrowser->clear();
 	qApp->processEvents();
 }
